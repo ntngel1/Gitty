@@ -1,0 +1,17 @@
+query currentUserProfile($avatarUrlSize: Int!) {
+    viewer {
+        avatarUrl(size: $avatarUrlSize)
+        name
+        login
+        status {
+            emoji
+            message
+        }
+    }
+}
+
+query currentUserLogin {
+    viewer {
+        login
+    }
+}
