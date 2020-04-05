@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 5.4.2020
+ * This file created by Kirill Shepelev (aka ntngel1)
+ * ntngel1@gmail.com
+ */
+
 package com.github.ntngel1.gitty.presentation.ui.screens.profile
 
 import androidx.fragment.app.Fragment
@@ -5,8 +11,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.github.ntngel1.gitty.R
 import com.github.ntngel1.gitty.domain.entities.user.UserProfileEntity
-import com.github.ntngel1.gitty.presentation.ui.screens.profile_following.ProfileFollowingFragment
 import com.github.ntngel1.gitty.presentation.ui.screens.profile_followers.ProfileFollowersFragment
+import com.github.ntngel1.gitty.presentation.ui.screens.profile_following.ProfileFollowingFragment
 import com.github.ntngel1.gitty.presentation.ui.screens.profile_overview.ProfileOverviewFragment
 import com.github.ntngel1.gitty.presentation.ui.screens.profile_projects.ProfileProjectsFragment
 import com.github.ntngel1.gitty.presentation.ui.screens.profile_repositories.ProfileRepositoriesFragment

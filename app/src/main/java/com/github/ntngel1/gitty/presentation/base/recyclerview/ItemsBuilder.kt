@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 5.4.2020
+ * This file created by Kirill Shepelev (aka ntngel1)
+ * ntngel1@gmail.com
+ */
+
 package com.github.ntngel1.gitty.presentation.base.recyclerview
 
 import androidx.collection.SparseArrayCompat
@@ -5,7 +11,6 @@ import androidx.collection.set
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ntngel1.gitty.presentation.base.recyclerview.core.Item
 import com.github.ntngel1.gitty.presentation.base.recyclerview.core.ItemAdapter
-import com.github.ntngel1.gitty.presentation.utils.dp
 import java.util.*
 import kotlin.collections.LinkedHashSet
 
@@ -23,9 +28,12 @@ class ItemsBuilder(
     private val spacings = SparseArrayCompat<Int>()
 
     fun item(block: () -> Item<*>?) {
-        block.invoke()?.let { item ->
-            items.add(item)
-        }
+        block.invoke()
+            ?.let(items::add)
+    }
+
+    fun addItem(item: Item<*>?) {
+        item?.let(items::add)
     }
 
     operator fun Item<*>?.unaryPlus() {

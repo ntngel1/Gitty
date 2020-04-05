@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 5.4.2020
+ * This file created by Kirill Shepelev (aka ntngel1)
+ * ntngel1@gmail.com
+ */
+
 package com.github.ntngel1.gitty.presentation.ui.screens.auth
 
 import android.annotation.SuppressLint
@@ -12,13 +18,9 @@ import com.github.ntngel1.gitty.presentation.ui.Screens
 import com.github.ntngel1.gitty.presentation.utils.gone
 import com.github.ntngel1.gitty.presentation.utils.toast
 import com.github.ntngel1.gitty.presentation.utils.visible
-import com.github.ntngel1.gitty.presentation.utils.visibleOrGone
-import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_auth.*
 import moxy.ktx.moxyPresenter
 import ru.terrakok.cicerone.Router
-import toothpick.Scope
-import toothpick.ktp.extension.getInstance
 import javax.inject.Inject
 
 class AuthFragment : BaseFragment(), AuthView {

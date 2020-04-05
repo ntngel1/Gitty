@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 5.4.2020
+  ~ This file created by Kirill Shepelev (aka ntngel1)
+  ~ ntngel1@gmail.com
+  -->
+
 <resources>
     <string name="app_name">Gitty</string>
 
@@ -19,6 +25,8 @@
     <string name="copy_link">Скопировать ссылку</string>
 
     <string name="forks_truncated">%1$d+ forks</string>
+    <string name="pinned">Закрепленное</string>
+    <string name="customize">Изменить</string>
     <plurals name="forks_count">
         <item quantity="one">%1$d форк</item>
         <item quantity="two">%1$d форка</item>

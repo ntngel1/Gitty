@@ -1,12 +1,16 @@
+/*
+ * Copyright (c) 5.4.2020
+ * This file created by Kirill Shepelev (aka ntngel1)
+ * ntngel1@gmail.com
+ */
+
 package com.github.ntngel1.gitty
 
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.
