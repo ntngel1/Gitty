@@ -3,6 +3,6 @@
 
     <item
         android:id="@+id/drawer_navigation_repositories"
-        android:title="@string/repositories"/>
+        android:title="@string/profile_repositories"/>
 
 </menu>

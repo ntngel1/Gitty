@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="left"
-    android:fitsSystemWindows="false">
+    tools:openDrawer="left">
 
     <FrameLayout
         android:id="@+id/drawer_fragment_container"
@@ -16,8 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_navigation_header"
-        app:menu="@menu/drawer_navigation_menu" />
+        app:menu="@menu/menu_navigation_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

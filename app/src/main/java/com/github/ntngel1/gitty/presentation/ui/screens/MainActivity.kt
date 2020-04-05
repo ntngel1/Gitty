@@ -1,9 +1,10 @@
-package com.github.ntngel1.gitty.presentation.ui
+package com.github.ntngel1.gitty.presentation.ui.screens
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.github.ntngel1.gitty.R
 import com.github.ntngel1.gitty.presentation.di.Scopes
+import com.github.ntngel1.gitty.presentation.ui.Screens
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router

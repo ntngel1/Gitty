@@ -1,4 +1,4 @@
-package com.github.ntngel1.gitty.domain.interactors.authorization
+package com.github.ntngel1.gitty.domain.interactors.authorization.authorize
 
 import io.reactivex.Completable
 

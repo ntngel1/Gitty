@@ -1,13 +1,15 @@
 package com.github.ntngel1.gitty.presentation.ui.screens.auth
 
-import com.github.ntngel1.gitty.domain.interactors.authorization.AuthorizeInteractor
-import com.github.ntngel1.gitty.domain.interactors.authorization.GetAuthorizationUrlInteractor
+import com.github.ntngel1.gitty.domain.interactors.authorization.authorize.AuthorizeInteractor
+import com.github.ntngel1.gitty.domain.interactors.authorization.get_authorization_url.GetAuthorizationUrlInteractor
 import com.github.ntngel1.gitty.presentation.base.BasePresenter
 import com.github.ntngel1.gitty.presentation.utils.logErrors
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import moxy.InjectViewState
 import javax.inject.Inject
 
+@InjectViewState
 class AuthPresenter @Inject constructor(
     private val getAuthorizationUrl: GetAuthorizationUrlInteractor,
     private val authorize: AuthorizeInteractor

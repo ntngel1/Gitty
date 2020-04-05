@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/shimmer_profile_overview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        tools:visibility="gone">
+
+        <include layout="@layout/shimmer_pinned_repository" />
+
+        <include layout="@layout/shimmer_pinned_repository" />
+
+        <include layout="@layout/shimmer_pinned_repository" />
+
+        <include layout="@layout/shimmer_pinned_repository" />
+
+        <include layout="@layout/shimmer_pinned_repository" />
+
+        <include layout="@layout/shimmer_pinned_repository" />
+
+        <include layout="@layout/shimmer_pinned_repository" />
+
+        <include layout="@layout/shimmer_pinned_repository" />
+
+        <include layout="@layout/shimmer_pinned_repository" />
+
+        <include layout="@layout/shimmer_pinned_repository" />
+
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_profile_overview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_profile_overview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:padding="16dp"
+            tools:listitem="@layout/item_pinned_repository" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</FrameLayout>

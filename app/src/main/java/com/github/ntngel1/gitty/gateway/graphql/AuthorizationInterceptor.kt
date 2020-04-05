@@ -1,6 +1,6 @@
 package com.github.ntngel1.gitty.gateway.graphql
 
-import com.github.ntngel1.gitty.domain.interactors.authorization.GetAccessTokenInteractor
+import com.github.ntngel1.gitty.domain.interactors.authorization.get_access_token.GetAccessTokenInteractor
 import com.github.ntngel1.gitty.presentation.di.Scopes
 import okhttp3.Interceptor
 import okhttp3.Response

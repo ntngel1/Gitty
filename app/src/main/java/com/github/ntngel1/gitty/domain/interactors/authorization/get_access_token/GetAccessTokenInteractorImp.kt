@@ -1,6 +1,7 @@
-package com.github.ntngel1.gitty.domain.interactors.authorization
+package com.github.ntngel1.gitty.domain.interactors.authorization.get_access_token
 
 import com.github.ntngel1.gitty.domain.gateways.AuthorizationGateway
+import com.github.ntngel1.gitty.domain.interactors.authorization.get_access_token.GetAccessTokenInteractor
 import io.reactivex.Maybe
 import javax.inject.Inject
 

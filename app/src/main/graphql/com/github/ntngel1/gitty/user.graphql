@@ -1,11 +1,32 @@
-query currentUserProfile($avatarUrlSize: Int!) {
-    viewer {
+query userProfile($login: String!, $avatarUrlSize: Int!) {
+    user(login: $login) {
         avatarUrl(size: $avatarUrlSize)
         name
         login
+
         status {
             emoji
             message
+        }
+
+        repositories {
+            totalCount
+        }
+
+        projects {
+            totalCount
+        }
+
+        starredRepositories {
+            totalCount
+        }
+
+        followers {
+            totalCount
+        }
+
+        following {
+            totalCount
         }
     }
 }
@@ -13,5 +34,43 @@ query currentUserProfile($avatarUrlSize: Int!) {
 query currentUserLogin {
     viewer {
         login
+    }
+}
+
+query userOverview($login: String!) {
+    user(login: $login) {
+        pinnedItems(first: 6) {
+            nodes {
+                __typename
+
+                ... on Gist {
+                    id
+                    name
+                }
+
+                ... on Repository {
+                    id
+                    name
+                    description
+
+                    languages(
+                        first: 1,
+                        orderBy: {
+                            direction: DESC,
+                            field: SIZE
+                        }
+                    ) {
+                        nodes {
+                            name
+                            color
+                        }
+                    }
+
+                    forks {
+                        totalCount
+                    }
+                }
+            }
+        }
     }
 }

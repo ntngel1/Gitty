@@ -1,10 +1,11 @@
-package com.github.ntngel1.gitty.domain.interactors.authorization
+package com.github.ntngel1.gitty.domain.interactors.authorization.get_authorization_url
 
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 
-class GetAuthorizationUrlInteractorImp @Inject constructor() : GetAuthorizationUrlInteractor {
+class GetAuthorizationUrlInteractorImp @Inject constructor() :
+    GetAuthorizationUrlInteractor {
 
     override fun invoke(): Single<String> {
         val state = UUID.randomUUID().toString()

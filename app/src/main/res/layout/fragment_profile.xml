@@ -3,82 +3,97 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    app:statusBarBackground="@android:color/transparent">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways"
+            app:menu="@menu/menu_profile"
             tools:title="ntngel1" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_profile_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardview_profile_avatar"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    tools:src="@tools:sample/avatars" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardview_profile_avatar"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            </com.google.android.material.card.MaterialCardView>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageview_profile_avatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        tools:src="@tools:sample/avatars" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textview_profile_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textSize="18sp"
-                android:textColor="@android:color/white"
-                app:layout_constraintStart_toEndOf="@id/cardview_profile_avatar"
-                app:layout_constraintTop_toTopOf="@id/cardview_profile_avatar"
-                tools:text="Kirill Shepelev" />
+                </com.google.android.material.card.MaterialCardView>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@id/cardview_profile_avatar"
-                app:layout_constraintEnd_toEndOf="@id/textview_profile_name"
-                app:layout_constraintStart_toStartOf="@id/textview_profile_name"
-                app:layout_constraintTop_toBottomOf="@id/textview_profile_name"
-                tools:text="😀 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse hendrerit condimentum neque, vel interdum ipsum lacinia a. Vestibulum convallis, libero sit amet pellentesque tincidunt, dolor metus ullamcorper arcu, quis finibus metus nulla et nulla. Nullam commodo, neque vitae dignissim interdum, tellus neque ultricies urna, vel sagittis leo enim quis risus. Morbi at ullamcorper turpis. Nunc sed nibh sed sem sodales varius. " />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_profile_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:background="@color/colorShimmerBackground"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/cardview_profile_avatar"
+                    app:layout_constraintTop_toTopOf="@id/cardview_profile_avatar"
+                    tools:text="Kirill Shepelev" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textview_profile_status"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/colorShimmerBackground"
+                    android:ellipsize="end"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="@id/cardview_profile_avatar"
+                    app:layout_constraintEnd_toEndOf="@id/textview_profile_name"
+                    app:layout_constraintStart_toStartOf="@id/textview_profile_name"
+                    app:layout_constraintTop_toBottomOf="@id/textview_profile_name"
+                    tools:text="😀 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse hendrerit condimentum neque, vel interdum ipsum lacinia a. Vestibulum convallis, libero sit amet pellentesque tincidunt, dolor metus ullamcorper arcu, quis finibus metus nulla et nulla. Nullam commodo, neque vitae dignissim interdum, tellus neque ultricies urna, vel sagittis leo enim quis risus. Morbi at ullamcorper turpis. Nunc sed nibh sed sem sodales varius. " />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary" />
+            android:background="?attr/colorPrimary"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/colorWhite"
+            app:tabTextColor="@color/colorWhite50" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
