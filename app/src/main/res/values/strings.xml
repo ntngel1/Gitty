@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 5.4.2020
+  ~ Copyright (c) 6.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
@@ -7,32 +7,42 @@
 <resources>
     <string name="app_name">Gitty</string>
 
-    <string name="auth_authorize_with_your_account">Авторизуйтесь с помощью вашего GitHub-аккаунта</string>
-    <string name="auth_authorize">Авторизоваться</string>
+    <string name="auth_authorize_with_your_account">Please, authorize with your GitHub-account</string>
+    <string name="auth_authorize">Authorize</string>
 
-    <string name="profile_overview">Обзор</string>
-    <string name="profile_repositories">Репозитории</string>
-    <string name="profile_repositories_with_count">Репозитории (%1$d)</string>
-    <string name="profile_projects_with_count">Проекты (%1$d)</string>
-    <string name="profile_projects">Проекты</string>
+    <string name="profile_overview">Overview</string>
+    <string name="profile_repositories">Repositories</string>
+    <string name="profile_repositories_with_count">Repositories (%1$d)</string>
+    <string name="profile_projects_with_count">Projects (%1$d)</string>
+    <string name="profile_projects">Projects</string>
     <string name="profile_starred_repositories_with_count">Stars (%1$d)</string>
     <string name="profile_starred_repositories">Stars</string>
-    <string name="profile_followers_with_count">Подписчики (%1$d)</string>
-    <string name="profile_followers">Подписчики</string>
-    <string name="profile_following_with_count">Подписки (%1$d)</string>
-    <string name="profile_following">Подписки</string>
-    <string name="details">Подробнее</string>
-    <string name="copy_link">Скопировать ссылку</string>
+    <string name="profile_followers_with_count">Followers (%1$d)</string>
+    <string name="profile_followers">Followers</string>
+    <string name="profile_following_with_count">Following (%1$d)</string>
+    <string name="profile_following">Following</string>
+    <string name="details">Details</string>
+    <string name="copy_link">Copy link</string>
 
     <string name="forks_truncated">%1$d+ forks</string>
-    <string name="pinned">Закрепленное</string>
-    <string name="customize">Изменить</string>
+    <string name="pinned">Pinned</string>
+    <string name="profile_repositories_forked_from">"Forked from %1$s/%2$s"</string>
+    <string name="stars_truncated">%1$d+ stars</string>
+
     <plurals name="forks_count">
-        <item quantity="one">%1$d форк</item>
-        <item quantity="two">%1$d форка</item>
-        <item quantity="few">%1$d форка</item>
-        <item quantity="many">%1$d форков</item>
-        <item quantity="other">%1$d форков</item>
+        <item quantity="one">%1$d fork</item>
+        <item quantity="two">%1$d forks</item>
+        <item quantity="few">%1$d forks</item>
+        <item quantity="many">%1$d forks</item>
+        <item quantity="other">%1$d forks</item>
+    </plurals>
+
+    <plurals name="stars_count">
+        <item quantity="one">%1$d star</item>
+        <item quantity="two">%1$d stars</item>
+        <item quantity="few">%1$d stars</item>
+        <item quantity="many">%1$d stars</item>
+        <item quantity="other">%1$d stars</item>
     </plurals>
 
 </resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 6.4.2020
+  ~ This file created by Kirill Shepelev (aka ntngel1)
+  ~ ntngel1@gmail.com
+  -->
+
+<com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.overview.views.ContributionCalendarView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contribution_calendar_profile_overview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />

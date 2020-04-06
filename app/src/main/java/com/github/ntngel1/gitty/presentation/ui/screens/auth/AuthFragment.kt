@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 5.4.2020
+ * Copyright (c) 6.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -13,7 +13,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.github.ntngel1.gitty.R
-import com.github.ntngel1.gitty.presentation.base.BaseFragment
+import com.github.ntngel1.gitty.presentation.common.BaseFragment
 import com.github.ntngel1.gitty.presentation.ui.Screens
 import com.github.ntngel1.gitty.presentation.utils.gone
 import com.github.ntngel1.gitty.presentation.utils.toast

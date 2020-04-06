@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 5.4.2020
+ * Copyright (c) 6.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -7,17 +7,20 @@
 package com.github.ntngel1.gitty.gateway.graphql
 
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.rxQuery
 import com.github.ntngel1.gitty.CurrentUserLoginQuery
 import com.github.ntngel1.gitty.UserOverviewQuery
 import com.github.ntngel1.gitty.UserProfileQuery
+import com.github.ntngel1.gitty.UserRepositoriesQuery
+import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarDayEntity
+import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarEntity
+import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarWeekEntity
 import com.github.ntngel1.gitty.domain.entities.gist.GistEntity
-import com.github.ntngel1.gitty.domain.entities.repository.RepositoryEntity
-import com.github.ntngel1.gitty.domain.entities.user.PinnableItem
-import com.github.ntngel1.gitty.domain.entities.user.ProfileOverviewEntity
-import com.github.ntngel1.gitty.domain.entities.user.UserProfileEntity
-import com.github.ntngel1.gitty.domain.entities.user.UserStatusEntity
+import com.github.ntngel1.gitty.domain.entities.repository.PinnedRepositoryEntity
+import com.github.ntngel1.gitty.domain.entities.user.*
 import com.github.ntngel1.gitty.domain.gateways.UserGateway
+import com.github.ntngel1.gitty.gateway.utils.emptyListIfNull
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -26,7 +29,7 @@ class GraphQLUserGateway @Inject constructor(
     private val apolloClient: ApolloClient
 ) : UserGateway {
 
-    override fun getUserProfile(login: String): Single<UserProfileEntity> {
+    override fun getProfile(login: String): Single<ProfileEntity> {
         val query = UserProfileQuery(
             avatarUrlSize = 200, // TODO Maybe pass as parameter of method?
             login = login
@@ -38,7 +41,7 @@ class GraphQLUserGateway @Inject constructor(
                 response.data()?.user ?: throw IllegalStateException() // TODO Error handling?
             }
             .map { data ->
-                UserProfileEntity(
+                ProfileEntity(
                     login = data.login,
                     name = data.name,
                     avatarUrl = data.avatarUrl,
@@ -69,7 +72,7 @@ class GraphQLUserGateway @Inject constructor(
             .singleOrError()
     }
 
-    override fun getUserOverview(login: String): Single<ProfileOverviewEntity> {
+    override fun getOverview(login: String): Single<OverviewEntity> {
         val query = UserOverviewQuery(login)
         return apolloClient.rxQuery(query)
             .subscribeOn(Schedulers.io()) // TODO pass schedulers via constructor
@@ -80,7 +83,22 @@ class GraphQLUserGateway @Inject constructor(
                 val pinnedItems = user.pinnedItems.nodes
                     ?: emptyList()
 
-                ProfileOverviewEntity(
+                OverviewEntity(
+                    contributionCalendar = ContributionCalendarEntity(
+                        totalContributionCount = user.contributionsCollection.contributionCalendar.totalContributions,
+                        colors = user.contributionsCollection.contributionCalendar.colors,
+                        weeks = user.contributionsCollection.contributionCalendar.weeks.map { week ->
+                            ContributionCalendarWeekEntity(
+                                firstDay = week.firstDay,
+                                days = week.contributionDays.map { day ->
+                                    ContributionCalendarDayEntity(
+                                        color = day.color,
+                                        contributionCount = day.contributionCount
+                                    )
+                                }
+                            )
+                        }
+                    ),
                     pinnedItems = pinnedItems.filterNotNull()
                         .map { item ->
                             if (item.__typename == "Gist") {
@@ -91,7 +109,7 @@ class GraphQLUserGateway @Inject constructor(
 
                                 PinnableItem.Gist(gist)
                             } else {
-                                val repository = RepositoryEntity(
+                                val repository = PinnedRepositoryEntity(
                                     id = item.asRepository!!.id,
                                     name = item.asRepository.name,
                                     description = item.asRepository.description,
@@ -102,6 +120,48 @@ class GraphQLUserGateway @Inject constructor(
 
                                 PinnableItem.Repository(repository)
                             }
+                        }
+                )
+            }
+            .singleOrError()
+    }
+
+    override fun getRepositories(
+        login: String,
+        limit: Int,
+        cursor: String?
+    ): Single<RepositoriesPageEntity> {
+        val query = UserRepositoriesQuery(
+            login = login,
+            limit = limit,
+            cursor = Input.optional(cursor)
+        )
+
+        return apolloClient.rxQuery(query)
+            .subscribeOn(Schedulers.io()) // TODO pass schedulers via constructor
+            .map { response ->
+                response.data()?.user?.repositories
+                    ?: throw IllegalStateException() // TODO Error handling?
+            }
+            .map { page ->
+                RepositoriesPageEntity(
+                    hasNextPage = page.pageInfo.hasNextPage,
+                    cursor = page.pageInfo.endCursor,
+                    repositories = page.nodes.emptyListIfNull()
+                        .filterNotNull()
+                        .map { repository ->
+                            RepositoryEntity(
+                                id = repository.id,
+                                name = repository.name,
+                                description = repository.description,
+                                forksCount = repository.forkCount,
+                                updatedAt = repository.updatedAt,
+                                forkedFromRepositoryName = repository.parent?.name,
+                                forkedFromRepositoryOwner = repository.parent?.owner?.login,
+                                licenseName = repository.licenseInfo?.nickname,
+                                languageName = repository.primaryLanguage?.name,
+                                languageColor = repository.primaryLanguage?.color
+                            )
                         }
                 )
             }

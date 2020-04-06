@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 5.4.2020
+ * Copyright (c) 6.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -13,6 +13,7 @@ import com.github.ntngel1.gitty.presentation.di.modules.common.AppModule
 import com.github.ntngel1.gitty.presentation.di.modules.common.GatewayModule
 import com.github.ntngel1.gitty.presentation.di.modules.common.InteractorModule
 import com.github.ntngel1.gitty.presentation.di.modules.common.ServerModule
+import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 import toothpick.Toothpick
 import toothpick.configuration.Configuration
@@ -23,6 +24,7 @@ class GittyApplication : Application() {
         super.onCreate()
         INSTANCE = this
 
+        AndroidThreeTen.init(this)
         initTimber()
         initToothpick()
     }

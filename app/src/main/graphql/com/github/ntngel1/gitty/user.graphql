@@ -72,5 +72,61 @@ query userOverview($login: String!) {
                 }
             }
         }
+
+        contributionsCollection {
+            contributionCalendar {
+                colors
+                totalContributions
+                weeks {
+                    firstDay
+                    contributionDays {
+                        color
+                        contributionCount
+                    }
+                }
+            }
+        }
+    }
+}
+
+query userRepositories($login: String!, $limit: Int!, $cursor: String) {
+    user(login: $login) {
+        repositories(
+            first: $limit,
+            after: $cursor,
+            orderBy: {
+                direction: DESC,
+                field: UPDATED_AT
+            }
+        ) {
+            pageInfo {
+                hasNextPage
+                endCursor
+            }
+
+            nodes {
+                id
+                description
+                forkCount
+                name
+                updatedAt
+
+                parent {
+                    name
+                    owner {
+                        login
+                    }
+                }
+
+                licenseInfo {
+                    nickname
+                }
+
+                primaryLanguage {
+                    name
+                    color
+                }
+            }
+        }
     }
 }

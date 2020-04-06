@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 5.4.2020
+ * Copyright (c) 6.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -8,7 +8,7 @@ package com.github.ntngel1.gitty.presentation.ui.screens.drawer
 
 import android.os.Bundle
 import com.github.ntngel1.gitty.R
-import com.github.ntngel1.gitty.presentation.base.BaseFragment
+import com.github.ntngel1.gitty.presentation.common.BaseFragment
 import com.github.ntngel1.gitty.presentation.di.modules.DrawerModule
 import com.github.ntngel1.gitty.presentation.ui.Screens
 import moxy.ktx.moxyPresenter

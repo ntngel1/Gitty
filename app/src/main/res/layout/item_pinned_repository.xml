@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 5.4.2020
+  ~ Copyright (c) 6.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
@@ -41,17 +41,15 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             tools:text="GitHub Android Client" />
 
-        <LinearLayout
+        <com.google.android.material.chip.ChipGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="4dp">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_pinned_repository_language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:clickable="false"
                 tools:text="Kotlin" />
 
@@ -62,7 +60,7 @@
                 android:clickable="false"
                 tools:text="1 fork" />
 
-        </LinearLayout>
+        </com.google.android.material.chip.ChipGroup>
 
     </LinearLayout>
 

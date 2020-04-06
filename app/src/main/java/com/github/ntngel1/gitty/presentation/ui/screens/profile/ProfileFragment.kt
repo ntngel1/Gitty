@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 5.4.2020
+ * Copyright (c) 6.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -11,9 +11,10 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.github.ntngel1.gitty.R
-import com.github.ntngel1.gitty.domain.entities.user.UserProfileEntity
-import com.github.ntngel1.gitty.presentation.base.BaseFragment
+import com.github.ntngel1.gitty.domain.entities.user.ProfileEntity
+import com.github.ntngel1.gitty.presentation.common.BaseFragment
 import com.github.ntngel1.gitty.presentation.di.modules.ProfileModule
+import com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.ProfileViewPagerAdapter
 import com.github.ntngel1.gitty.presentation.utils.argument
 import com.github.ntngel1.gitty.presentation.utils.setup
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -52,26 +53,29 @@ class ProfileFragment : BaseFragment(), ProfileView {
         setupViewPager()
     }
 
-    override fun setProfileHeader(userProfile: UserProfileEntity) {
+    override fun setProfileHeader(profile: ProfileEntity) {
         shimmer_profile_header.hideShimmer()
 
         // Removing background that are used for shimmer layout
         textview_profile_name.background = null
         textview_profile_status.background = null
 
-        textview_profile_name.text = userProfile.name
-        textview_profile_status.text = "${userProfile.status.emoji} ${userProfile.status.message}"
+        textview_profile_name.text = profile.name
+        textview_profile_status.text = "${profile.status.emoji} ${profile.status.message}"
 
         Glide.with(imageview_profile_avatar)
-            .load(userProfile.avatarUrl)
+            .load(profile.avatarUrl)
             .fitCenter()
             .into(imageview_profile_avatar)
 
-        ProfileViewPagerAdapter.setupTabLayout(tablayout_profile, viewpager_profile, userProfile)
+        ProfileViewPagerAdapter.setupTabLayout(tablayout_profile, viewpager_profile, profile)
     }
 
     private fun setupViewPager() {
-        viewpager_profile.adapter = ProfileViewPagerAdapter(this)
+        viewpager_profile.adapter =
+            ProfileViewPagerAdapter(
+                this
+            )
         ProfileViewPagerAdapter.setupTabLayout(tablayout_profile, viewpager_profile)
     }
 
@@ -79,8 +83,10 @@ class ProfileFragment : BaseFragment(), ProfileView {
         toolbar_profile.setup(title = userLogin, onBackClicked = router::exit)
         toolbar_profile.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId) {
-                R.id.menu_profile_details -> TODO()
-                R.id.menu_profile_copy_link -> TODO()
+                R.id.menu_profile_details -> {
+                }
+                R.id.menu_profile_copy_link -> {
+                }
                 else -> return@setOnMenuItemClickListener false
             }
 

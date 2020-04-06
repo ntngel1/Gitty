@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 5.4.2020
+ * Copyright (c) 6.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -20,6 +20,8 @@ import com.github.ntngel1.gitty.domain.interactors.user.get_user_overview.GetUse
 import com.github.ntngel1.gitty.domain.interactors.user.get_user_overview.GetUserOverviewInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.user.get_user_profile.GetUserProfileInteractor
 import com.github.ntngel1.gitty.domain.interactors.user.get_user_profile.GetUserProfileInteractorImp
+import com.github.ntngel1.gitty.domain.interactors.user.get_user_repositories.GetUserRepositoriesInteractor
+import com.github.ntngel1.gitty.domain.interactors.user.get_user_repositories.GetUserRepositoriesInteractorImp
 import toothpick.config.Module
 import toothpick.ktp.binding.bind
 
@@ -46,5 +48,8 @@ class InteractorModule : Module() {
 
         bind<IsAuthorizedInteractor>()
             .toClass<IsAuthorizedInteractorImp>()
+
+        bind<GetUserRepositoriesInteractor>()
+            .toClass<GetUserRepositoriesInteractorImp>()
     }
 }
