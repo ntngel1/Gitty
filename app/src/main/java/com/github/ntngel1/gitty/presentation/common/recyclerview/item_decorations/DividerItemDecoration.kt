@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
 
-package com.github.ntngel1.gitty.presentation.common.recyclerview
+package com.github.ntngel1.gitty.presentation.common.recyclerview.item_decorations
 
 import android.graphics.Canvas
 import android.graphics.Color

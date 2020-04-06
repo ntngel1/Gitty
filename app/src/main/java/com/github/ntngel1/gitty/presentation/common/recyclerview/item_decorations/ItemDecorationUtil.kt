@@ -1,16 +1,16 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
 
-package com.github.ntngel1.gitty.presentation.common.recyclerview
+package com.github.ntngel1.gitty.presentation.common.recyclerview.item_decorations
 
 import android.view.View
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ntngel1.gitty.presentation.common.recyclerview.core.Item
-import com.github.ntngel1.gitty.presentation.common.recyclerview.core.ItemAdapter
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.Item
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.ItemAdapter
 
 fun RecyclerView.ItemDecoration.itemForView(view: View, recyclerView: RecyclerView): Item<*> {
     val position = recyclerView.getChildAdapterPosition(view)

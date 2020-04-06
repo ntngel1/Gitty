@@ -9,7 +9,7 @@ query userProfile($login: String!, $avatarUrlSize: Int!) {
             message
         }
 
-        repositories {
+        repositories(affiliations: [OWNER]) {
             totalCount
         }
 
@@ -94,6 +94,7 @@ query userRepositories($login: String!, $limit: Int!, $cursor: String) {
         repositories(
             first: $limit,
             after: $cursor,
+            affiliations: [OWNER],
             orderBy: {
                 direction: DESC,
                 field: UPDATED_AT
@@ -116,6 +117,10 @@ query userRepositories($login: String!, $limit: Int!, $cursor: String) {
                     owner {
                         login
                     }
+                }
+
+                stargazers {
+                    totalCount
                 }
 
                 licenseInfo {

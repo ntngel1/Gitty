@@ -1,16 +1,18 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
 
-package com.github.ntngel1.gitty.presentation.common.recyclerview
+package com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter
 
 import androidx.collection.SparseArrayCompat
 import androidx.collection.set
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ntngel1.gitty.presentation.common.recyclerview.core.Item
-import com.github.ntngel1.gitty.presentation.common.recyclerview.core.ItemAdapter
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.Item
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.ItemAdapter
+import com.github.ntngel1.gitty.presentation.common.recyclerview.item_decorations.DividerItemDecoration
+import com.github.ntngel1.gitty.presentation.common.recyclerview.item_decorations.SpacingItemDecoration
 import java.util.*
 import kotlin.collections.LinkedHashSet
 
@@ -77,7 +79,10 @@ fun RecyclerView.withItems(
 ) {
     val adapter = adapter as ItemAdapter
 
-    adapter.items = ItemsBuilder(dividerItemDecoration, spacingItemDecoration)
+    adapter.items = ItemsBuilder(
+        dividerItemDecoration,
+        spacingItemDecoration
+    )
         .apply(builder)
         .build()
 }

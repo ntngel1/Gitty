@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 5.4.2020
+  ~ Copyright (c) 7.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -36,7 +36,7 @@
                 android:background="@color/colorShimmerBackground"
                 tools:text="GitHub Android Client" />
 
-            <LinearLayout
+            <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -53,9 +53,9 @@
                     android:layout_height="wrap_content"
                     tools:text="1 fork" />
 
-            </LinearLayout>
+            </com.google.android.material.chip.ChipGroup>
 
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 

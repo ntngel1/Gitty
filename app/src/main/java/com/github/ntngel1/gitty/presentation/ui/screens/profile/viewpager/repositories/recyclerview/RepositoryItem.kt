@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -10,13 +10,18 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
 import com.github.ntngel1.gitty.R
-import com.github.ntngel1.gitty.presentation.common.recyclerview.core.Item
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.Item
 import com.github.ntngel1.gitty.presentation.utils.gone
 import com.github.ntngel1.gitty.presentation.utils.quantityString
 import com.github.ntngel1.gitty.presentation.utils.string
 import com.github.ntngel1.gitty.presentation.utils.visible
 import kotlinx.android.synthetic.main.item_repository.view.*
 import org.threeten.bp.Instant
+import org.threeten.bp.ZoneId
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
+import org.threeten.bp.temporal.ChronoUnit
+import kotlin.math.roundToInt
 
 data class RepositoryItem(
     override val id: String,
@@ -40,7 +45,7 @@ data class RepositoryItem(
         bindForkedFrom()
         bindDescription()
         bindLanguageChip()
-        bindUpdatedDateChip()
+        bindUpdatedAtChip()
         bindStarsChip()
         bindForksChip()
         bindLicenseChip()
@@ -54,7 +59,7 @@ data class RepositoryItem(
 
         chip_repository_forks.visible()
         chip_repository_forks.text = if (forksCount <= FORKS_COUNT_THRESHOLD) {
-            quantityString(R.plurals.forks_count, forksCount, forksCount)
+            quantityString(R.plurals.forks, forksCount, forksCount)
         } else {
             string(R.string.forks_truncated, FORKS_COUNT_THRESHOLD)
         }
@@ -68,20 +73,67 @@ data class RepositoryItem(
 
         chip_repository_stars.visible()
         chip_repository_stars.text = if (starsCount <= STARS_COUNT_THRESHOLD) {
-            quantityString(R.plurals.stars_count, starsCount, starsCount)
+            quantityString(R.plurals.stars, starsCount, starsCount)
         } else {
             string(R.string.stars_truncated, STARS_COUNT_THRESHOLD)
         }
     }
 
-    private fun View.bindUpdatedDateChip() {
+    private fun View.bindUpdatedAtChip() {
         if (updatedAt == null) {
             chip_repository_update_date.gone()
             return
         }
 
+        val zoneId = ZoneId.systemDefault()
+        val zonedUpdatedAt = updatedAt.atZone(zoneId)
+        val diffInSeconds = zonedUpdatedAt.until(
+            Instant.now().atZone(zoneId),
+            ChronoUnit.SECONDS
+        ).toInt()
+
         chip_repository_update_date.visible()
-        chip_repository_update_date.text = "SOMETHING" // TODO Date format
+        // TODO Refactor
+        chip_repository_update_date.text = when {
+            diffInSeconds <= 10 -> string(R.string.updated_now)
+            diffInSeconds < SECONDS_IN_MINUTE -> string(
+                R.string.updated_ago,
+                quantityString(
+                    R.plurals.seconds,
+                    diffInSeconds,
+                    diffInSeconds
+                )
+            )
+            diffInSeconds < SECONDS_IN_HOUR -> string(
+                R.string.updated_ago,
+                quantityString(
+                    R.plurals.minutes,
+                    (diffInSeconds / SECONDS_IN_MINUTE.toFloat()).roundToInt(),
+                    (diffInSeconds / SECONDS_IN_MINUTE.toFloat()).roundToInt()
+                )
+            )
+            diffInSeconds < SECONDS_IN_DAY -> string(
+                R.string.updated_ago,
+                quantityString(
+                    R.plurals.hours,
+                    (diffInSeconds / SECONDS_IN_HOUR.toFloat()).roundToInt(),
+                    (diffInSeconds / SECONDS_IN_HOUR.toFloat()).roundToInt()
+                )
+            )
+            diffInSeconds < SECONDS_IN_MONTH -> string(
+                R.string.updated_ago,
+                quantityString(
+                    R.plurals.days,
+                    (diffInSeconds / SECONDS_IN_DAY.toFloat()).roundToInt(),
+                    (diffInSeconds / SECONDS_IN_DAY.toFloat()).roundToInt()
+                )
+            )
+            else -> string(
+                R.string.updated_on,
+                DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+                    .format(zonedUpdatedAt)
+            )
+        }
     }
 
     private fun View.bindLicenseChip() {
@@ -139,5 +191,10 @@ data class RepositoryItem(
     companion object {
         private const val STARS_COUNT_THRESHOLD = 999
         private const val FORKS_COUNT_THRESHOLD = 99
+
+        private const val SECONDS_IN_MINUTE = 60
+        private const val SECONDS_IN_HOUR = SECONDS_IN_MINUTE * 60
+        private const val SECONDS_IN_DAY = SECONDS_IN_HOUR * 24
+        private const val SECONDS_IN_MONTH = SECONDS_IN_DAY * 30
     }
 }

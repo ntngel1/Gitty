@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 6.4.2020
+  ~ Copyright (c) 7.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
@@ -28,8 +28,47 @@
     <string name="pinned">Pinned</string>
     <string name="profile_repositories_forked_from">"Forked from %1$s/%2$s"</string>
     <string name="stars_truncated">%1$d+ stars</string>
+    <string name="empty_data">Here is empty</string>
+    <string name="refresh">Refresh</string>
+    <string name="error_occurred">Error occurred while loading.\n Pleasy, try again</string>
 
-    <plurals name="forks_count">
+    <string name="updated_now">Updated now</string>
+    <string name="updated_ago">Updated %1$s ago</string>
+    <string name="updated_on">Updated on %1$s</string>
+
+    <plurals name="days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="two">%1$d days</item>
+        <item quantity="few">%1$d days</item>
+        <item quantity="many">%1$d days</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">%1$d hour</item>
+        <item quantity="two">%1$d hours</item>
+        <item quantity="few">%1$d hours</item>
+        <item quantity="many">%1$d hours</item>
+        <item quantity="other">%1$d hours</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="two">%1$d minutes</item>
+        <item quantity="few">%1$d minutes</item>
+        <item quantity="many">%1$d minutes</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+
+    <plurals name="seconds">
+        <item quantity="one">%1$d second</item>
+        <item quantity="two">%1$d seconds</item>
+        <item quantity="few">%1$d seconds</item>
+        <item quantity="many">%1$d seconds</item>
+        <item quantity="other">%1$d seconds</item>
+    </plurals>
+
+    <plurals name="forks">
         <item quantity="one">%1$d fork</item>
         <item quantity="two">%1$d forks</item>
         <item quantity="few">%1$d forks</item>
@@ -37,7 +76,7 @@
         <item quantity="other">%1$d forks</item>
     </plurals>
 
-    <plurals name="stars_count">
+    <plurals name="stars">
         <item quantity="one">%1$d star</item>
         <item quantity="two">%1$d stars</item>
         <item quantity="few">%1$d stars</item>

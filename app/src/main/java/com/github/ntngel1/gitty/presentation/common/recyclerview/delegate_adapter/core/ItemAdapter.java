@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
 
-package com.github.ntngel1.gitty.presentation.common.recyclerview.core;
+package com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
 
     @NonNull
@@ -27,6 +29,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(viewType, parent, false);
+
+        Timber.d(
+                "Creating view for %s",
+                parent.getContext().getResources().getResourceEntryName(viewType)
+        );
 
         return new ItemHolder(view);
     }

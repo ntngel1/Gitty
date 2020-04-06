@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -10,8 +10,6 @@ import com.github.ntngel1.gitty.presentation.utils.logErrors
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
-import io.reactivex.ObservableSource
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -21,13 +19,14 @@ import io.reactivex.rxkotlin.withLatestFrom
 
 class Paginator<T>(
     private val delegate: PaginatorDelegate<T>
-) : ObservableSource<PaginatorState>, Consumer<PaginatorAction>, Disposable {
+) : Consumer<PaginatorAction<T>> {
 
-    private val actions = PublishRelay.create<PaginatorAction>()
-    private val state = BehaviorRelay.createDefault<PaginatorState>(PaginatorState.EmptyLoading)
-    private val compositeDisposable = CompositeDisposable()
+    private val actions = PublishRelay.create<PaginatorAction<T>>()
+    private val state = BehaviorRelay.createDefault<PaginatorState<T>>(PaginatorState.EmptyLoading)
 
-    override fun subscribe(observer: Observer<in PaginatorState>) {
+    fun subscribeState(onStateChanged: (state: PaginatorState<T>) -> Unit): Disposable {
+        val compositeDisposable = CompositeDisposable()
+
         actions.observeOn(AndroidSchedulers.mainThread())
             .withLatestFrom(state) { action, currentState -> action to currentState }
             .map { (action, currentState) ->
@@ -38,58 +37,78 @@ class Paginator<T>(
             .subscribe(state::accept)
             .let(compositeDisposable::add)
 
-        actions.publish { shared ->
-            Observable.merge(
-                shared.ofType<PaginatorAction.Refresh>()
-                    .flatMapSingle {
-                        delegate.loadFirstPage()
-                    }
-                    .map<PaginatorAction> { page ->
-                        PaginatorAction.PageLoaded(page)
-                    }
-                    .onErrorReturn { throwable ->
-                        PaginatorAction.Error(throwable)
-                    },
-                shared.ofType<PaginatorAction.LoadNextPage>()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .withLatestFrom(state) { _, currentState -> currentState }
-                    .flatMapSingle { currentState ->
-                        val cursor = when (currentState) {
-                            is PaginatorState.Data<*> -> currentState.nextPageCursor
-                            is PaginatorState.Refreshing<*> -> currentState.nextPageCursor
-                            else -> throw IllegalStateException("Cannot load next page")
-                        }
-
-                        delegate.loadNextPage(cursor)
-                    }
-                    .map<PaginatorAction> { page ->
-                        PaginatorAction.PageLoaded(page)
-                    }
-                    .onErrorReturn { throwable ->
-                        PaginatorAction.Error(throwable)
-                    },
-                shared.ofType<PaginatorAction.Initial>()
-                    .flatMapSingle {
-                        delegate.loadFirstPage()
-                    }
-                    .map<PaginatorAction> { page ->
-                        PaginatorAction.PageLoaded(page)
-                    }
-                    .onErrorReturn { throwable ->
-                        PaginatorAction.Error(throwable)
-                    }
-            )
-        }.logErrors()
+        actions
+            .publish { shared ->
+                Observable.merge(
+                    initialActionMiddleware(shared),
+                    loadNextPageActionMiddleware(shared),
+                    refreshActionMiddleware(shared)
+                )
+            }
+            .logErrors()
             .subscribe(actions::accept)
             .let(compositeDisposable::add)
 
-        state.subscribe(observer)
+        state.observeOn(AndroidSchedulers.mainThread())
+            .subscribe(onStateChanged)
+            .let(compositeDisposable::add)
+
+        return compositeDisposable
+    }
+
+    private fun initialActionMiddleware(shared: Observable<PaginatorAction<T>>): Observable<PaginatorAction<T>>? {
+        return shared.ofType<PaginatorAction.Initial>()
+            .flatMap {
+                delegate.loadFirstPage()
+                    .toObservable()
+                    .map<PaginatorAction<T>> { page ->
+                        PaginatorAction.PageLoaded(page)
+                    }
+                    .onErrorReturn { throwable ->
+                        PaginatorAction.Error(throwable)
+                    }
+            }
+    }
+
+    private fun loadNextPageActionMiddleware(shared: Observable<PaginatorAction<T>>): Observable<PaginatorAction<T>>? {
+        return shared.ofType<PaginatorAction.LoadNextPage>()
+            .observeOn(AndroidSchedulers.mainThread())
+            .withLatestFrom(state) { _, currentState -> currentState }
+            .flatMap { currentState ->
+                val cursor = (currentState as? PaginatorState.LoadingNextPage)?.nextPageCursor
+                if (cursor != null) {
+                    delegate.loadNextPage(cursor)
+                        .toObservable()
+                        .map<PaginatorAction<T>> { page ->
+                            PaginatorAction.PageLoaded(page)
+                        }
+                        .onErrorReturn { throwable ->
+                            PaginatorAction.Error(throwable)
+                        }
+                } else {
+                    Observable.empty()
+                }
+            }
+    }
+
+    private fun refreshActionMiddleware(shared: Observable<PaginatorAction<T>>): Observable<PaginatorAction<T>>? {
+        return shared.ofType<PaginatorAction.Refresh>()
+            .flatMap {
+                delegate.loadFirstPage()
+                    .toObservable()
+                    .map<PaginatorAction<T>> { page ->
+                        PaginatorAction.PageLoaded(page)
+                    }
+                    .onErrorReturn { throwable ->
+                        PaginatorAction.Error(throwable)
+                    }
+            }
     }
 
     private fun reduce(
-        currentState: PaginatorState,
-        action: PaginatorAction
-    ): PaginatorState = when (currentState) {
+        currentState: PaginatorState<T>,
+        action: PaginatorAction<T>
+    ): PaginatorState<T> = when (currentState) {
         is PaginatorState.EmptyLoading -> {
             when (action) {
                 is PaginatorAction.Initial -> {
@@ -101,7 +120,7 @@ class Paginator<T>(
                 is PaginatorAction.LoadNextPage -> {
                     throw IllegalStateException("Cannot load next page on empty loading")
                 }
-                is PaginatorAction.PageLoaded<*> -> {
+                is PaginatorAction.PageLoaded -> {
                     if (!action.page.isInitialPage) {
                         throw IllegalStateException("Page is not initial!")
                     }
@@ -128,7 +147,7 @@ class Paginator<T>(
                 is PaginatorAction.LoadNextPage -> {
                     throw IllegalStateException("Cannot load next page on empty content")
                 }
-                is PaginatorAction.PageLoaded<*> -> {
+                is PaginatorAction.PageLoaded -> {
                     throw IllegalStateException("State should be empty loading")
                 }
                 is PaginatorAction.Error -> {
@@ -147,7 +166,7 @@ class Paginator<T>(
                 is PaginatorAction.LoadNextPage -> {
                     throw IllegalStateException("Cannot load next page on empty content")
                 }
-                is PaginatorAction.PageLoaded<*> -> {
+                is PaginatorAction.PageLoaded -> {
                     throw IllegalStateException("State should be empty loading")
                 }
                 is PaginatorAction.Error -> {
@@ -155,7 +174,7 @@ class Paginator<T>(
                 }
             }
         }
-        is PaginatorState.Data<*> -> {
+        is PaginatorState.Data -> {
             when (action) {
                 is PaginatorAction.Initial -> {
                     throw IllegalStateException("Must be in empty loading state")
@@ -166,7 +185,7 @@ class Paginator<T>(
                 is PaginatorAction.Refresh -> {
                     PaginatorState.Refreshing(currentState.items, currentState.nextPageCursor)
                 }
-                is PaginatorAction.PageLoaded<*> -> {
+                is PaginatorAction.PageLoaded<T> -> {
                     // Skipping because we can receive this action when we're triggered loading next
                     // page and after that refreshed all data, then this next page loading ends up
                     // and we're receiving this action here...
@@ -177,18 +196,18 @@ class Paginator<T>(
                 }
             }
         }
-        is PaginatorState.FullData<*> -> {
+        is PaginatorState.FullData -> {
             when (action) {
                 is PaginatorAction.Initial -> {
                     throw IllegalStateException("Must be in empty loading state")
                 }
                 is PaginatorAction.LoadNextPage -> {
-                    throw IllegalStateException("All pages already loaded")
+                    currentState
                 }
                 is PaginatorAction.Refresh -> {
                     PaginatorState.RefreshingWithFullData(currentState.items)
                 }
-                is PaginatorAction.PageLoaded<*> -> {
+                is PaginatorAction.PageLoaded -> {
                     // Skipping because we can receive this action when we're triggered loading next
                     // page and after that refreshed all data, then this next page loading ends up
                     // and we're receiving this action here...
@@ -199,18 +218,18 @@ class Paginator<T>(
                 }
             }
         }
-        is PaginatorState.RefreshingWithFullData<*> -> {
+        is PaginatorState.RefreshingWithFullData -> {
             when (action) {
                 is PaginatorAction.Initial -> {
                     throw IllegalStateException("Must be in empty loading state")
                 }
                 is PaginatorAction.LoadNextPage -> {
-                    throw IllegalStateException("All pages already loaded")
+                    currentState
                 }
                 is PaginatorAction.Refresh -> {
                     throw IllegalStateException("Already refreshing")
                 }
-                is PaginatorAction.PageLoaded<*> -> {
+                is PaginatorAction.PageLoaded -> {
                     if (!action.page.isInitialPage) {
                         throw IllegalStateException("Page is not initial")
                     }
@@ -232,7 +251,7 @@ class Paginator<T>(
                 }
             }
         }
-        is PaginatorState.Refreshing<*> -> {
+        is PaginatorState.Refreshing -> {
             when (action) {
                 is PaginatorAction.Initial -> {
                     throw IllegalStateException("Must be in empty loading state")
@@ -246,15 +265,15 @@ class Paginator<T>(
                 is PaginatorAction.Refresh -> {
                     throw IllegalStateException("Already refreshing data")
                 }
-                is PaginatorAction.PageLoaded<*> -> {
+                is PaginatorAction.PageLoaded -> {
                     if (action.page.hasNextPage && action.page.cursor != null) {
                         PaginatorState.Data(
-                            items = currentState.items + action.page.items,
+                            items = action.page.items,
                             nextPageCursor = action.page.cursor
                         )
                     } else {
                         PaginatorState.FullData(
-                            items = currentState.items + action.page.items
+                            items = action.page.items
                         )
                     }
                 }
@@ -267,13 +286,13 @@ class Paginator<T>(
                 }
             }
         }
-        is PaginatorState.LoadingNextPage<*> -> {
+        is PaginatorState.LoadingNextPage -> {
             when (action) {
                 is PaginatorAction.Initial -> {
                     throw IllegalStateException("Must be in empty loading state")
                 }
                 is PaginatorAction.LoadNextPage -> {
-                    throw IllegalStateException("Already loading next page")
+                    currentState
                 }
                 is PaginatorAction.Refresh -> {
                     PaginatorState.LoadingNextPageWithRefreshing(
@@ -281,7 +300,7 @@ class Paginator<T>(
                         nextPageCursor = currentState.nextPageCursor
                     )
                 }
-                is PaginatorAction.PageLoaded<*> -> {
+                is PaginatorAction.PageLoaded -> {
                     if (action.page.hasNextPage && action.page.cursor != null) {
                         PaginatorState.Data(
                             items = currentState.items + action.page.items,
@@ -302,18 +321,18 @@ class Paginator<T>(
                 }
             }
         }
-        is PaginatorState.LoadingNextPageWithRefreshing<*> -> {
+        is PaginatorState.LoadingNextPageWithRefreshing -> {
             when (action) {
                 is PaginatorAction.Initial -> {
                     throw IllegalStateException("Must be in empty loading state")
                 }
                 is PaginatorAction.LoadNextPage -> {
-                    throw IllegalStateException("Already loading next page")
+                    currentState
                 }
                 is PaginatorAction.Refresh -> {
                     throw IllegalStateException("Already refreshing")
                 }
-                is PaginatorAction.PageLoaded<*> -> {
+                is PaginatorAction.PageLoaded -> {
                     if (action.page.isInitialPage) {
                         // set data
                         if (action.page.hasNextPage && action.page.cursor != null) {
@@ -361,11 +380,7 @@ class Paginator<T>(
         }
     }
 
-    override fun accept(t: PaginatorAction?) {
+    override fun accept(t: PaginatorAction<T>?) {
         t?.let(actions::accept)
     }
-
-    override fun dispose() = compositeDisposable.dispose()
-
-    override fun isDisposed(): Boolean = compositeDisposable.isDisposed
 }

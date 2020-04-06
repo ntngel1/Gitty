@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -12,9 +12,9 @@ import com.github.ntngel1.gitty.R
 import com.github.ntngel1.gitty.domain.entities.user.OverviewEntity
 import com.github.ntngel1.gitty.domain.entities.user.PinnableItem
 import com.github.ntngel1.gitty.presentation.common.BaseFragment
-import com.github.ntngel1.gitty.presentation.common.recyclerview.SpacingItemDecoration
-import com.github.ntngel1.gitty.presentation.common.recyclerview.core.ItemAdapter
-import com.github.ntngel1.gitty.presentation.common.recyclerview.withItems
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.ItemAdapter
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.withItems
+import com.github.ntngel1.gitty.presentation.common.recyclerview.item_decorations.SpacingItemDecoration
 import com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.overview.recyclerview.PinnedGistItem
 import com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.overview.recyclerview.PinnedHeaderItem
 import com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.overview.recyclerview.PinnedRepositoryItem
@@ -34,7 +34,8 @@ class ProfileOverviewFragment : BaseFragment(),
         scope.getInstance(ProfileOverviewPresenter::class.java)
     }
 
-    private val spacingItemDecoration = SpacingItemDecoration()
+    private val spacingItemDecoration =
+        SpacingItemDecoration()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

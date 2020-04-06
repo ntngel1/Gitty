@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 6.4.2020
+  ~ Copyright (c) 7.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
 
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:elevation="8dp"
-    app:cardCornerRadius="16dp">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:padding="16dp"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -62,6 +60,6 @@
 
         </com.google.android.material.chip.ChipGroup>
 
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </com.google.android.material.card.MaterialCardView>

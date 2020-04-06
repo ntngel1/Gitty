@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -10,7 +10,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
 import com.github.ntngel1.gitty.R
-import com.github.ntngel1.gitty.presentation.common.recyclerview.core.Item
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.Item
 import com.github.ntngel1.gitty.presentation.utils.gone
 import com.github.ntngel1.gitty.presentation.utils.quantityString
 import com.github.ntngel1.gitty.presentation.utils.string
@@ -44,7 +44,7 @@ data class PinnedRepositoryItem(
 
         chip_pinned_repository_forks.visible()
         chip_pinned_repository_forks.text = if (forksCount <= FORKS_COUNT_THRESHOLD) {
-            quantityString(R.plurals.forks_count, forksCount, forksCount)
+            quantityString(R.plurals.forks, forksCount, forksCount)
         } else {
             string(R.string.forks_truncated, FORKS_COUNT_THRESHOLD)
         }

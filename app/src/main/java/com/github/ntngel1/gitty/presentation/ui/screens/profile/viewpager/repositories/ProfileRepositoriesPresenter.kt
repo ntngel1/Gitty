@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -10,13 +10,13 @@ import com.github.ntngel1.gitty.domain.entities.user.RepositoriesPageEntity
 import com.github.ntngel1.gitty.domain.entities.user.RepositoryEntity
 import com.github.ntngel1.gitty.domain.gateways.UserGateway
 import com.github.ntngel1.gitty.presentation.common.BasePresenter
-import com.github.ntngel1.gitty.presentation.common.pagination.*
+import com.github.ntngel1.gitty.presentation.common.pagination.Paginator
+import com.github.ntngel1.gitty.presentation.common.pagination.PaginatorAction
+import com.github.ntngel1.gitty.presentation.common.pagination.PaginatorDelegate
+import com.github.ntngel1.gitty.presentation.common.pagination.PaginatorPage
 import com.github.ntngel1.gitty.presentation.di.UserLogin
-import io.reactivex.Observer
 import io.reactivex.Single
-import io.reactivex.disposables.Disposable
 import moxy.InjectViewState
-import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
@@ -31,34 +31,36 @@ class ProfileRepositoriesPresenter @Inject constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        paginator.subscribe(object : Observer<PaginatorState> {
-            override fun onComplete() {}
-            override fun onSubscribe(d: Disposable) {}
-
-            override fun onNext(t: PaginatorState) {
-                viewState.setState(t)
-            }
-
-            override fun onError(e: Throwable) {
-                Timber.d(e.toString())
-            }
-        })
-        paginator.disposeOnDestroy()
-        paginator.accept(PaginatorAction.Initial)
+        loadRepositories()
     }
 
     override fun loadFirstPage(): Single<PaginatorPage<RepositoryEntity>> {
-        return userGateway.getRepositories(login = userLogin, limit = 15, cursor = null)
+        return userGateway.getRepositories(login = userLogin, limit = PAGE_LIMIT, cursor = null)
             .map { repositoriesPage ->
                 repositoriesPage.toPaginatorPage()
             }
     }
 
     override fun loadNextPage(cursor: String): Single<PaginatorPage<RepositoryEntity>> {
-        return userGateway.getRepositories(login = userLogin, limit = 15, cursor = cursor)
+        return userGateway.getRepositories(login = userLogin, limit = PAGE_LIMIT, cursor = cursor)
             .map { repositoriesPage ->
                 repositoriesPage.toPaginatorPage()
             }
+    }
+
+    fun onRefresh() {
+        paginator.accept(PaginatorAction.Refresh)
+    }
+
+    fun onLoadNextPage() {
+        paginator.accept(PaginatorAction.LoadNextPage)
+    }
+
+    private fun loadRepositories() {
+        paginator.subscribeState(viewState::setState)
+            .disposeOnDestroy()
+
+        paginator.accept(PaginatorAction.Initial)
     }
 
     private fun RepositoriesPageEntity.toPaginatorPage() =
@@ -68,4 +70,8 @@ class ProfileRepositoriesPresenter @Inject constructor(
             isInitialPage = true,
             items = repositories
         )
+
+    companion object {
+        private const val PAGE_LIMIT = 10
+    }
 }

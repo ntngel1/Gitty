@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -155,6 +155,7 @@ class GraphQLUserGateway @Inject constructor(
                                 name = repository.name,
                                 description = repository.description,
                                 forksCount = repository.forkCount,
+                                starsCount = repository.stargazers.totalCount,
                                 updatedAt = repository.updatedAt,
                                 forkedFromRepositoryName = repository.parent?.name,
                                 forkedFromRepositoryOwner = repository.parent?.owner?.login,

@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 6.4.2020
+  ~ Copyright (c) 7.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <include
+        android:id="@+id/shimmer_profile_repositories"
+        layout="@layout/shimmer_profile_repositories" />
+
+    <com.github.ntngel1.gitty.presentation.ui.views.EmptyContentStubView
+        android:id="@+id/empty_content_stub_profile_repositories"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <com.github.ntngel1.gitty.presentation.ui.views.ErrorStubView
+        android:id="@+id/error_stub_profile_repositories"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_profile_repositories"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_profile_repositories"
+            android:id="@+id/recycler_profile_repositories"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:clipToPadding="false"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_repository" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

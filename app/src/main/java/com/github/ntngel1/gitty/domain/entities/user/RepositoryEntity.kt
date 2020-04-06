@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 7.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -13,6 +13,7 @@ data class RepositoryEntity(
     val name: String,
     val description: String?,
     val forksCount: Int,
+    val starsCount: Int,
     val updatedAt: Instant,
     val forkedFromRepositoryName: String?,
     val forkedFromRepositoryOwner: String?,
