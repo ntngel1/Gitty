@@ -6,6 +6,7 @@
 
 package com.github.ntngel1.gitty.gateway.graphql
 
+import android.content.SharedPreferences
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.rxQuery
@@ -26,7 +27,8 @@ import javax.inject.Inject
  * This is really dirty, I fucked up.
  */
 class GraphQLUserGateway @Inject constructor(
-    private val apolloClient: ApolloClient
+    private val apolloClient: ApolloClient,
+    private val sharedPreferences: SharedPreferences
 ) : UserGateway {
 
     override fun getProfile(login: String): Single<ProfileEntity> {
@@ -60,16 +62,25 @@ class GraphQLUserGateway @Inject constructor(
     }
 
     override fun getCurrentUserLogin(): Single<String> {
-        val query = CurrentUserLoginQuery()
-        return apolloClient.rxQuery(query)
-            .subscribeOn(Schedulers.io()) // TODO pass schedulers via constructor
-            .map { response ->
-                response.data() ?: throw IllegalStateException() // TODO Error handling?
-            }
-            .map {
-                it.viewer.login
-            }
-            .singleOrError()
+        val cachedCurrentUserLogin = sharedPreferences.getString(CURRENT_USER_LOGIN_KEY, null)
+        return if (cachedCurrentUserLogin != null) {
+            Single.just(cachedCurrentUserLogin)
+        } else {
+            val query = CurrentUserLoginQuery()
+            apolloClient.rxQuery(query)
+                .subscribeOn(Schedulers.io()) // TODO pass schedulers via constructor
+                .map { response ->
+                    response.data() ?: throw IllegalStateException() // TODO Error handling?
+                }
+                .map { response ->
+                    sharedPreferences.edit()
+                        .putString(CURRENT_USER_LOGIN_KEY, response.viewer.login)
+                        .apply()
+
+                    response.viewer.login
+                }
+                .singleOrError()
+        }
     }
 
     override fun getOverview(login: String): Single<OverviewEntity> {
@@ -210,5 +221,9 @@ class GraphQLUserGateway @Inject constructor(
                 )
             }
             .singleOrError()
+    }
+
+    companion object {
+        private const val CURRENT_USER_LOGIN_KEY = "current_user_login"
     }
 }
