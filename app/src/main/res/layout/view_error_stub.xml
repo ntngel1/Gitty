@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 7.4.2020
+  ~ Copyright (c) 8.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
 
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- We're using NestedScrollView here because this layout can be used inside CoordinatorLayout
+     with AppBarLayout, and AppBarLayout can overlap this view without an ability to scroll down. -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -38,4 +39,4 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-</FrameLayout>
+</androidx.core.widget.NestedScrollView>

@@ -4,14 +4,14 @@
  * ntngel1@gmail.com
  */
 
-package com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.repositories
+package com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.stars
 
 import com.github.ntngel1.gitty.domain.entities.user.RepositoryEntity
 import com.github.ntngel1.gitty.presentation.common.pagination.Pagination
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEndSingle
 
-interface ProfileRepositoriesView : MvpView {
+interface ProfileStarsView : MvpView {
 
     @AddToEndSingle
     fun setState(state: Pagination.State<RepositoryEntity>)

@@ -106,32 +106,58 @@ query userRepositories($login: String!, $limit: Int!, $cursor: String) {
             }
 
             nodes {
-                id
-                description
-                forkCount
-                name
-                updatedAt
-
-                parent {
-                    name
-                    owner {
-                        login
-                    }
-                }
-
-                stargazers {
-                    totalCount
-                }
-
-                licenseInfo {
-                    nickname
-                }
-
-                primaryLanguage {
-                    name
-                    color
-                }
+                ...RepositoryParts
             }
         }
+    }
+}
+
+query userStarredRepositories($login: String!, $limit: Int!, $cursor: String) {
+    user(login: $login) {
+        starredRepositories(
+            first: $limit,
+            after: $cursor,
+            orderBy: {
+                direction: DESC,
+                field: STARRED_AT
+            }
+        ) {
+            pageInfo {
+                hasNextPage
+                endCursor
+            }
+
+            nodes {
+                ...RepositoryParts
+            }
+        }
+    }
+}
+
+fragment RepositoryParts on Repository {
+    id
+    description
+    forkCount
+    name
+    updatedAt
+
+    parent {
+        name
+        owner {
+            login
+        }
+    }
+
+    stargazers {
+        totalCount
+    }
+
+    licenseInfo {
+        nickname
+    }
+
+    primaryLanguage {
+        name
+        color
     }
 }

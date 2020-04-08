@@ -4,11 +4,11 @@
  * ntngel1@gmail.com
  */
 
-package com.github.ntngel1.gitty.domain.interactors.user.get_user_repositories
+package com.github.ntngel1.gitty.domain.interactors.user.get_user_starred_repositories
 
 import com.github.ntngel1.gitty.domain.entities.user.RepositoriesPageEntity
 import io.reactivex.Single
 
-interface GetUserRepositoriesInteractor {
+interface GetUserStarredRepositoriesInteractor {
     operator fun invoke(login: String, limit: Int, cursor: String?): Single<RepositoriesPageEntity>
 }

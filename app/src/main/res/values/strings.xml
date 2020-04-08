@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 7.4.2020
+  ~ Copyright (c) 8.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
@@ -35,6 +35,8 @@
     <string name="updated_now">Updated now</string>
     <string name="updated_ago">Updated %1$s ago</string>
     <string name="updated_on">Updated on %1$s</string>
+    <string name="unable_to_load_data">Unable to load data</string>
+    <string name="try_again">Try again</string>
 
     <plurals name="days">
         <item quantity="one">%1$d day</item>

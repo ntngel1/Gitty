@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 7.4.2020
+ * Copyright (c) 9.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -38,13 +38,15 @@ class ItemsBuilder(
         item?.let(items::add)
     }
 
-    operator fun Item<*>?.unaryPlus() {
-        this?.let(items::add)
+    fun Item<*>.render() {
+        items.add(this)
     }
 
-    operator fun List<Item<*>?>?.unaryPlus() {
-        this?.filterNotNull()
-            ?.let(items::addAll)
+    fun List<Item<*>>.render(spacingPx: Int = 0) {
+        this.forEach { item ->
+            spacing(spacingPx)
+            items.add(item)
+        }
     }
 
     fun divider() {
@@ -54,6 +56,10 @@ class ItemsBuilder(
 
     fun spacing(px: Int) {
         checkNotNull(spacingItemDecoration)
+
+        if (px <= 0) {
+            return
+        }
 
         if (spacings.containsKey(items.size)) {
             spacings[items.size] = spacings.get(items.size)!! + px
@@ -72,17 +78,14 @@ class ItemsBuilder(
     }
 }
 
-fun RecyclerView.withItems(
+fun RecyclerView.render(
     dividerItemDecoration: DividerItemDecoration? = null,
     spacingItemDecoration: SpacingItemDecoration? = null,
     builder: ItemsBuilder.() -> Unit
 ) {
     val adapter = adapter as ItemAdapter
 
-    adapter.items = ItemsBuilder(
-        dividerItemDecoration,
-        spacingItemDecoration
-    )
+    adapter.items = ItemsBuilder(dividerItemDecoration, spacingItemDecoration)
         .apply(builder)
         .build()
 }

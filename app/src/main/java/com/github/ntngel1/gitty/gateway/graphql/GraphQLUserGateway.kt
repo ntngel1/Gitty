@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 7.4.2020
+ * Copyright (c) 9.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -9,10 +9,7 @@ package com.github.ntngel1.gitty.gateway.graphql
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.rxQuery
-import com.github.ntngel1.gitty.CurrentUserLoginQuery
-import com.github.ntngel1.gitty.UserOverviewQuery
-import com.github.ntngel1.gitty.UserProfileQuery
-import com.github.ntngel1.gitty.UserRepositoriesQuery
+import com.github.ntngel1.gitty.*
 import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarDayEntity
 import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarEntity
 import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarWeekEntity
@@ -25,6 +22,9 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
+/**
+ * This is really dirty, I fucked up.
+ */
 class GraphQLUserGateway @Inject constructor(
     private val apolloClient: ApolloClient
 ) : UserGateway {
@@ -151,17 +151,60 @@ class GraphQLUserGateway @Inject constructor(
                         .filterNotNull()
                         .map { repository ->
                             RepositoryEntity(
-                                id = repository.id,
-                                name = repository.name,
-                                description = repository.description,
-                                forksCount = repository.forkCount,
-                                starsCount = repository.stargazers.totalCount,
-                                updatedAt = repository.updatedAt,
-                                forkedFromRepositoryName = repository.parent?.name,
-                                forkedFromRepositoryOwner = repository.parent?.owner?.login,
-                                licenseName = repository.licenseInfo?.nickname,
-                                languageName = repository.primaryLanguage?.name,
-                                languageColor = repository.primaryLanguage?.color
+                                id = repository.fragments.repositoryParts.id,
+                                name = repository.fragments.repositoryParts.name,
+                                description = repository.fragments.repositoryParts.description,
+                                forksCount = repository.fragments.repositoryParts.forkCount,
+                                starsCount = repository.fragments.repositoryParts.stargazers.totalCount,
+                                updatedAt = repository.fragments.repositoryParts.updatedAt,
+                                forkedFromRepositoryName = repository.fragments.repositoryParts.parent?.name,
+                                forkedFromRepositoryOwner = repository.fragments.repositoryParts.parent?.owner?.login,
+                                licenseName = repository.fragments.repositoryParts.licenseInfo?.nickname,
+                                languageName = repository.fragments.repositoryParts.primaryLanguage?.name,
+                                languageColor = repository.fragments.repositoryParts.primaryLanguage?.color
+                            )
+                        }
+                )
+            }
+            .singleOrError()
+    }
+
+    override fun getStarredRepositories(
+        login: String,
+        limit: Int,
+        cursor: String?
+    ): Single<RepositoriesPageEntity> {
+        val query = UserStarredRepositoriesQuery(
+            login = login,
+            limit = limit,
+            cursor = Input.optional(cursor)
+        )
+
+        return apolloClient.rxQuery(query)
+            .subscribeOn(Schedulers.io())
+            .map { response ->
+                response.data()?.user?.starredRepositories
+                    ?: throw IllegalStateException() // TODO Error handling?
+            }
+            .map { page ->
+                RepositoriesPageEntity(
+                    hasNextPage = page.pageInfo.hasNextPage,
+                    cursor = page.pageInfo.endCursor,
+                    repositories = page.nodes.emptyListIfNull()
+                        .filterNotNull()
+                        .map { repository ->
+                            RepositoryEntity(
+                                id = repository.fragments.repositoryParts.id,
+                                name = repository.fragments.repositoryParts.name,
+                                description = repository.fragments.repositoryParts.description,
+                                forksCount = repository.fragments.repositoryParts.forkCount,
+                                starsCount = repository.fragments.repositoryParts.stargazers.totalCount,
+                                updatedAt = repository.fragments.repositoryParts.updatedAt,
+                                forkedFromRepositoryName = repository.fragments.repositoryParts.parent?.name,
+                                forkedFromRepositoryOwner = repository.fragments.repositoryParts.parent?.owner?.login,
+                                licenseName = repository.fragments.repositoryParts.licenseInfo?.nickname,
+                                languageName = repository.fragments.repositoryParts.primaryLanguage?.name,
+                                languageColor = repository.fragments.repositoryParts.primaryLanguage?.color
                             )
                         }
                 )
