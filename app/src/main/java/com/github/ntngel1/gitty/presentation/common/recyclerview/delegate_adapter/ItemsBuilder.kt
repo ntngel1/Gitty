@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 7.4.2020
+ * Copyright (c) 9.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -72,17 +72,14 @@ class ItemsBuilder(
     }
 }
 
-fun RecyclerView.withItems(
+fun RecyclerView.render(
     dividerItemDecoration: DividerItemDecoration? = null,
     spacingItemDecoration: SpacingItemDecoration? = null,
     builder: ItemsBuilder.() -> Unit
 ) {
     val adapter = adapter as ItemAdapter
 
-    adapter.items = ItemsBuilder(
-        dividerItemDecoration,
-        spacingItemDecoration
-    )
+    adapter.items = ItemsBuilder(dividerItemDecoration, spacingItemDecoration)
         .apply(builder)
         .build()
 }

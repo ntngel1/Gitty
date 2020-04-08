@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 7.4.2020
+ * Copyright (c) 9.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -13,7 +13,7 @@ import com.github.ntngel1.gitty.domain.entities.user.OverviewEntity
 import com.github.ntngel1.gitty.domain.entities.user.PinnableItem
 import com.github.ntngel1.gitty.presentation.common.BaseFragment
 import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.ItemAdapter
-import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.withItems
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.render
 import com.github.ntngel1.gitty.presentation.common.recyclerview.item_decorations.SpacingItemDecoration
 import com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.overview.recyclerview.PinnedGistItem
 import com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.overview.recyclerview.PinnedHeaderItem
@@ -74,7 +74,7 @@ class ProfileOverviewFragment : BaseFragment(),
             }
         }
 
-        recyclerview_profile_overview.withItems(
+        recyclerview_profile_overview.render(
             spacingItemDecoration = spacingItemDecoration
         ) {
             spacing(16.dp)

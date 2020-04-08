@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 9.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -15,6 +15,10 @@ class GetUserRepositoriesInteractorImp @Inject constructor(
     private val userGateway: UserGateway
 ) : GetUserRepositoriesInteractor {
 
-    override fun invoke(login: String, limit: Int, cursor: String): Single<RepositoriesPageEntity> =
+    override fun invoke(
+        login: String,
+        limit: Int,
+        cursor: String?
+    ): Single<RepositoriesPageEntity> =
         userGateway.getRepositories(login = login, limit = limit, cursor = cursor)
 }
