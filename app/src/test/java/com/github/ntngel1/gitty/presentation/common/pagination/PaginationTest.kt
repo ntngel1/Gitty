@@ -24,7 +24,7 @@ class PaginationTest {
                 assertFalse(isPageLoadingError)
             }
             // Middleware handles Refresh action and starts loading data
-            .reduce(Pagination.Action.StartedRefreshing)
+            .reduce(Pagination.Action.Refresh)
             .assertions {
                 assert(isRefreshing)
                 assert(items.isEmpty())
@@ -58,7 +58,7 @@ class PaginationTest {
                 assertFalse(isPageLoadingError)
             }
             // Middleware handles action
-            .reduce(Pagination.Action.StartedRefreshing)
+            .reduce(Pagination.Action.Refresh)
             .assertions {
                 assert(isRefreshing)
                 assertEquals(listOf(1), items)
@@ -91,7 +91,7 @@ class PaginationTest {
                 assertFalse(isPageLoadingError)
             }
             // Middleware handling action and starts loading
-            .reduce(Pagination.Action.StartedRefreshing)
+            .reduce(Pagination.Action.Refresh)
             .assertions {
                 assert(isRefreshing)
                 assertEquals(listOf(1), items)
@@ -130,7 +130,7 @@ class PaginationTest {
                 assertFalse(isPageLoadingError)
             }
             // Middleware handles action and starts loading next page
-            .reduce(Pagination.Action.StartedLoadingNextPage)
+            .reduce(Pagination.Action.LoadNextPage)
             .assertions {
                 assertFalse(isRefreshing)
                 assertEquals(listOf(1, 2), items)
@@ -164,7 +164,7 @@ class PaginationTest {
                 assertFalse(isPageLoadingError)
             }
             // Middleware handles it
-            .reduce(Pagination.Action.StartedLoadingNextPage)
+            .reduce(Pagination.Action.LoadNextPage)
             .assertions {
                 assertFalse(isRefreshing)
                 assertEquals(listOf(1, 2, 3, 4), items)
@@ -195,7 +195,7 @@ class PaginationTest {
                 assertFalse(isLoadingNextPage)
                 assert(isPageLoadingError)
             }
-            .reduce(Pagination.Action.StartedLoadingNextPage)
+            .reduce(Pagination.Action.LoadNextPage)
             .assertions {
                 assertFalse(isRefreshing)
                 assertEquals(listOf(1, 2, 3, 4), items)

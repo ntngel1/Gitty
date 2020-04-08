@@ -53,37 +53,34 @@ class ProfileOverviewFragment : BaseFragment(),
         shimmer_profile_overview.gone()
         swipe_refresh_layout_profile_overview.visible()
 
-        val pinnedItems = overview.pinnedItems.map { pinnableItem ->
-            when (pinnableItem) {
-                is PinnableItem.Repository -> {
-                    PinnedRepositoryItem(
-                        id = "pinnedRepository(${pinnableItem.repository.id})",
-                        name = pinnableItem.repository.name,
-                        languageColor = pinnableItem.repository.languageColor,
-                        description = pinnableItem.repository.description,
-                        languageName = pinnableItem.repository.languageName,
-                        forksCount = pinnableItem.repository.forksCount
-                    )
-                }
-                is PinnableItem.Gist -> {
-                    PinnedGistItem(
-                        id = pinnableItem.gist.id,
-                        name = pinnableItem.gist.name
-                    )
-                }
-            }
-        }
-
         recyclerview_profile_overview.render(
             spacingItemDecoration = spacingItemDecoration
         ) {
             spacing(16.dp)
-            +PinnedHeaderItem()
+            PinnedHeaderItem().render()
 
-            pinnedItems.forEach { pinnedItem ->
-                spacing(8.dp)
-                addItem(pinnedItem)
-            }
+            overview.pinnedItems
+                .map { pinnableItem ->
+                    when (pinnableItem) {
+                        is PinnableItem.Repository -> {
+                            PinnedRepositoryItem(
+                                id = "pinnedRepository(${pinnableItem.repository.id})",
+                                name = pinnableItem.repository.name,
+                                languageColor = pinnableItem.repository.languageColor,
+                                description = pinnableItem.repository.description,
+                                languageName = pinnableItem.repository.languageName,
+                                forksCount = pinnableItem.repository.forksCount
+                            )
+                        }
+                        is PinnableItem.Gist -> {
+                            PinnedGistItem(
+                                id = pinnableItem.gist.id,
+                                name = pinnableItem.gist.name
+                            )
+                        }
+                    }
+                }
+                .render(spacingPx = 8.dp)
         }
     }
 }

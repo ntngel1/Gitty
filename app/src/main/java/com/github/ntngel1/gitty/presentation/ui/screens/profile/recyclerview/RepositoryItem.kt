@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 7.4.2020
+ * Copyright (c) 9.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
 
-package com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.repositories.recyclerview
+package com.github.ntngel1.gitty.presentation.ui.screens.profile.recyclerview
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable

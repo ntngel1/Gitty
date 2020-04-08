@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 9.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -11,7 +11,6 @@ import com.github.ntngel1.gitty.presentation.common.BasePresenter
 import com.github.ntngel1.gitty.presentation.di.UserLogin
 import com.github.ntngel1.gitty.presentation.utils.logErrors
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
 import moxy.InjectViewState
 import javax.inject.Inject
 
@@ -30,14 +29,11 @@ class ProfilePresenter @Inject constructor(
         getUserProfile(userLogin)
             .logErrors()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = { userProfile ->
-                    viewState.setProfileHeader(userProfile)
-                },
-                onError = { throwable ->
-                    // TODO Handle error
-                }
-            )
+            .subscribe({ userProfile ->
+                viewState.setProfileHeader(userProfile)
+            }, { throwable ->
+                // TODO Handle error
+            })
             .disposeOnDestroy()
     }
 }

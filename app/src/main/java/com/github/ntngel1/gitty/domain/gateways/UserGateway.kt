@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 9.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -15,5 +15,16 @@ interface UserGateway {
     fun getCurrentUserLogin(): Single<String>
     fun getProfile(login: String): Single<ProfileEntity>
     fun getOverview(login: String): Single<OverviewEntity>
-    fun getRepositories(login: String, limit: Int, cursor: String?): Single<RepositoriesPageEntity>
+
+    fun getRepositories(
+        login: String,
+        limit: Int,
+        cursor: String?
+    ): Single<RepositoriesPageEntity>
+
+    fun getStarredRepositories(
+        login: String,
+        limit: Int,
+        cursor: String?
+    ): Single<RepositoriesPageEntity>
 }

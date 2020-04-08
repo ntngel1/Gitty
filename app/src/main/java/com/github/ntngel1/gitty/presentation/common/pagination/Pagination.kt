@@ -26,8 +26,8 @@ object Pagination {
 
     // Internal actions
     sealed class Action<out T> {
-        object StartedRefreshing : Action<Nothing>()
-        object StartedLoadingNextPage : Action<Nothing>()
+        object Refresh : Action<Nothing>()
+        object LoadNextPage : Action<Nothing>()
 
         data class PageLoaded<out T>(
             val items: List<T>,
@@ -75,11 +75,11 @@ object Pagination {
             isRefreshing = false,
             error = action.throwable
         )
-        is Action.StartedRefreshing -> state.copy(
+        is Action.Refresh -> state.copy(
             isRefreshing = true,
             error = null
         )
-        is Action.StartedLoadingNextPage -> state.copy(
+        is Action.LoadNextPage -> state.copy(
             isLoadingNextPage = true,
             isPageLoadingError = false
         )

@@ -4,10 +4,10 @@
  * ntngel1@gmail.com
  */
 
-package com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.repositories
+package com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.stars
 
 import com.github.ntngel1.gitty.domain.entities.user.RepositoryEntity
-import com.github.ntngel1.gitty.domain.interactors.user.get_user_repositories.GetUserRepositoriesInteractor
+import com.github.ntngel1.gitty.domain.interactors.user.get_user_starred_repositories.GetUserStarredRepositoriesInteractor
 import com.github.ntngel1.gitty.presentation.common.BasePresenter
 import com.github.ntngel1.gitty.presentation.common.pagination.Pagination
 import com.github.ntngel1.gitty.presentation.di.UserLogin
@@ -17,10 +17,10 @@ import moxy.InjectViewState
 import javax.inject.Inject
 
 @InjectViewState
-class ProfileRepositoriesPresenter @Inject constructor(
+class ProfileStarsPresenter @Inject constructor(
     @UserLogin private val userLogin: String,
-    private val getUserRepositories: GetUserRepositoriesInteractor
-) : BasePresenter<ProfileRepositoriesView>() {
+    private val getUserStarredRepositories: GetUserStarredRepositoriesInteractor
+) : BasePresenter<ProfileStarsView>() {
 
     private var currentState = Pagination.State<RepositoryEntity>()
         set(value) {
@@ -34,12 +34,9 @@ class ProfileRepositoriesPresenter @Inject constructor(
     }
 
     fun onRefresh() {
-        getUserRepositories(userLogin, PAGE_LIMIT, cursor = null)
+        getUserStarredRepositories(userLogin, PAGE_LIMIT, cursor = null)
             .doOnSubscribe {
-                currentState = Pagination.reduce(
-                    currentState,
-                    Pagination.Action.Refresh
-                )
+                currentState = Pagination.reduce(currentState, Pagination.Action.Refresh)
             }
             .observeOn(AndroidSchedulers.mainThread())
             .logErrors()
@@ -71,7 +68,7 @@ class ProfileRepositoriesPresenter @Inject constructor(
             return
         }
 
-        getUserRepositories(userLogin, PAGE_LIMIT, state.nextPageCursor)
+        getUserStarredRepositories(userLogin, PAGE_LIMIT, state.nextPageCursor)
             .doOnSubscribe {
                 currentState = Pagination.reduce(
                     currentState,

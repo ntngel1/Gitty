@@ -38,13 +38,15 @@ class ItemsBuilder(
         item?.let(items::add)
     }
 
-    operator fun Item<*>?.unaryPlus() {
-        this?.let(items::add)
+    fun Item<*>.render() {
+        items.add(this)
     }
 
-    operator fun List<Item<*>?>?.unaryPlus() {
-        this?.filterNotNull()
-            ?.let(items::addAll)
+    fun List<Item<*>>.render(spacingPx: Int = 0) {
+        this.forEach { item ->
+            spacing(spacingPx)
+            items.add(item)
+        }
     }
 
     fun divider() {
@@ -54,6 +56,10 @@ class ItemsBuilder(
 
     fun spacing(px: Int) {
         checkNotNull(spacingItemDecoration)
+
+        if (px <= 0) {
+            return
+        }
 
         if (spacings.containsKey(items.size)) {
             spacings[items.size] = spacings.get(items.size)!! + px
