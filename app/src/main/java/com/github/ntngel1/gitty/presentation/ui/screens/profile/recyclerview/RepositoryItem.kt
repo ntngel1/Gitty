@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 9.4.2020
+ * Copyright (c) 16.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
 import com.github.ntngel1.gitty.R
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.Callback1
 import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.Item
 import com.github.ntngel1.gitty.presentation.utils.gone
 import com.github.ntngel1.gitty.presentation.utils.quantityString
@@ -25,6 +26,7 @@ import kotlin.math.roundToInt
 
 data class RepositoryItem(
     override val id: String,
+    val repositoryId: String,
     val name: String,
     val forkedFromRepositoryName: String?,
     val forkedFromRepositoryOwner: String?,
@@ -34,7 +36,8 @@ data class RepositoryItem(
     val licenseName: String?,
     val updatedAt: Instant?,
     val starsCount: Int,
-    val forksCount: Int
+    val forksCount: Int,
+    val onClicked: Callback1<String, Unit>
 ) : Item<RepositoryItem>() {
 
     override val layoutId: Int
@@ -49,6 +52,18 @@ data class RepositoryItem(
         bindStarsChip()
         bindForksChip()
         bindLicenseChip()
+        bindOnClickListener()
+    }
+
+    override fun recycle(view: View) = with(view) {
+        super.recycle(view)
+        this.setOnClickListener(null)
+    }
+
+    private fun View.bindOnClickListener() {
+        this.setOnClickListener {
+            onClicked.listener.invoke(repositoryId)
+        }
     }
 
     private fun View.bindForksChip() {
@@ -168,7 +183,7 @@ data class RepositoryItem(
 
         textview_repository_forked_from.visible()
         textview_repository_forked_from.text = string(
-            R.string.profile_repositories_forked_from,
+            R.string.forked_from,
             forkedFromRepositoryOwner,
             forkedFromRepositoryName
         )

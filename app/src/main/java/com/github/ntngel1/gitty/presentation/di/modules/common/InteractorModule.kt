@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 9.4.2020
+ * Copyright (c) 16.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -14,12 +14,16 @@ import com.github.ntngel1.gitty.domain.interactors.authorization.get_authorizati
 import com.github.ntngel1.gitty.domain.interactors.authorization.get_authorization_url.GetAuthorizationUrlInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.authorization.is_authorized.IsAuthorizedInteractor
 import com.github.ntngel1.gitty.domain.interactors.authorization.is_authorized.IsAuthorizedInteractorImp
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_header.GetRepositoryHeaderInteractor
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_header.GetRepositoryHeaderInteractorImp
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_overview.GetRepositoryOverviewInteractor
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_overview.GetRepositoryOverviewInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.user.get_current_user_login.GetCurrentUserLoginInteractor
 import com.github.ntngel1.gitty.domain.interactors.user.get_current_user_login.GetCurrentUserLoginInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.user.get_user_overview.GetUserOverviewInteractor
 import com.github.ntngel1.gitty.domain.interactors.user.get_user_overview.GetUserOverviewInteractorImp
-import com.github.ntngel1.gitty.domain.interactors.user.get_user_profile.GetUserProfileInteractor
-import com.github.ntngel1.gitty.domain.interactors.user.get_user_profile.GetUserProfileInteractorImp
+import com.github.ntngel1.gitty.domain.interactors.user.get_user_profile_header.GetUserProfileInteractor
+import com.github.ntngel1.gitty.domain.interactors.user.get_user_profile_header.GetUserProfileInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.user.get_user_repositories.GetUserRepositoriesInteractor
 import com.github.ntngel1.gitty.domain.interactors.user.get_user_repositories.GetUserRepositoriesInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.user.get_user_starred_repositories.GetUserStarredRepositoriesInteractor
@@ -56,5 +60,11 @@ class InteractorModule : Module() {
 
         bind<GetUserStarredRepositoriesInteractor>()
             .toClass<GetUserStarredRepositoriesInteractorImp>()
+
+        bind<GetRepositoryOverviewInteractor>()
+            .toClass<GetRepositoryOverviewInteractorImp>()
+
+        bind<GetRepositoryHeaderInteractor>()
+            .toClass<GetRepositoryHeaderInteractorImp>()
     }
 }

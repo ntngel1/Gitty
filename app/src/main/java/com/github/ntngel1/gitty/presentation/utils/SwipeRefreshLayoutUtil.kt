@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 7.4.2020
+ * Copyright (c) 16.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -16,7 +16,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 var SwipeRefreshLayout.isRefreshingSafe: Boolean
     get() = isRefreshing
     set(value) {
-        post {
-            isRefreshing = value
+        if (value != isRefreshing) {
+            post {
+                isRefreshing = value
+            }
         }
     }

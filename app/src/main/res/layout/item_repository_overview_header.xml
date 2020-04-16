@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 16.4.2020
+  ~ This file created by Kirill Shepelev (aka ntngel1)
+  ~ ntngel1@gmail.com
+  -->
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_repository_overview_header_owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        tools:text="ntngel1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_repository_overview_header_forked_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="?attr/selectableItemBackground"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        tools:text="forked from ntngel1/Gitty" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_repository_overview_header_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        tools:text="GitHub client for Android" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_repository_overview_header_star"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="8dp"
+        app:iconGravity="textStart"
+        app:iconPadding="1dp"
+        tools:icon="@drawable/ic_star_border_white"
+        tools:text="Star (24.1k)" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_repository_overview_header_fork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        app:icon="@drawable/ic_repository_forked_black"
+        app:iconGravity="textStart"
+        app:iconPadding="4dp"
+        tools:enabled="false"
+        tools:text="Fork (4.9k)" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_repository_overview_header_watch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        app:iconGravity="textStart"
+        app:iconPadding="4dp"
+        tools:icon="@drawable/ic_eye_black"
+        tools:text="Watch (9k)" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 9.4.2020
+ * Copyright (c) 16.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
 
 package com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.repositories
 
-import com.github.ntngel1.gitty.domain.entities.user.RepositoryEntity
+import com.github.ntngel1.gitty.domain.entities.user.UserRepositoryEntity
 import com.github.ntngel1.gitty.domain.interactors.user.get_user_repositories.GetUserRepositoriesInteractor
 import com.github.ntngel1.gitty.presentation.common.BasePresenter
 import com.github.ntngel1.gitty.presentation.common.pagination.Pagination
@@ -22,7 +22,7 @@ class ProfileRepositoriesPresenter @Inject constructor(
     private val getUserRepositories: GetUserRepositoriesInteractor
 ) : BasePresenter<ProfileRepositoriesView>() {
 
-    private var currentState = Pagination.State<RepositoryEntity>()
+    private var currentState = Pagination.State<UserRepositoryEntity>()
         set(value) {
             field = value
             viewState.setState(value)
@@ -35,13 +35,13 @@ class ProfileRepositoriesPresenter @Inject constructor(
 
     fun onRefresh() {
         getUserRepositories(userLogin, PAGE_LIMIT, cursor = null)
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
                 currentState = Pagination.reduce(
                     currentState,
                     Pagination.Action.Refresh
                 )
             }
-            .observeOn(AndroidSchedulers.mainThread())
             .logErrors()
             .subscribe({ repositoriesPage ->
                 currentState = Pagination.reduce(
@@ -72,13 +72,13 @@ class ProfileRepositoriesPresenter @Inject constructor(
         }
 
         getUserRepositories(userLogin, PAGE_LIMIT, state.nextPageCursor)
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
                 currentState = Pagination.reduce(
                     currentState,
                     Pagination.Action.LoadNextPage
                 )
             }
-            .observeOn(AndroidSchedulers.mainThread())
             .logErrors()
             .subscribe({ repositoriesPage ->
                 currentState = Pagination.reduce(
@@ -99,6 +99,16 @@ class ProfileRepositoriesPresenter @Inject constructor(
                 )
             })
             .disposeOnDestroy()
+    }
+
+    fun onRepositoryClicked(repositoryId: String) {
+        val repositoryName = currentState.items
+            .find { it.id == repositoryId }
+            ?.name
+
+        repositoryName?.let { repositoryName ->
+            viewState.showRepositoryScreen(repositoryName, repositoryId)
+        }
     }
 
     companion object {

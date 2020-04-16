@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 9.4.2020
+ * Copyright (c) 16.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -9,11 +9,12 @@ package com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.stars
 import android.os.Bundle
 import android.view.View
 import com.github.ntngel1.gitty.R
-import com.github.ntngel1.gitty.domain.entities.user.RepositoryEntity
+import com.github.ntngel1.gitty.domain.entities.user.UserRepositoryEntity
 import com.github.ntngel1.gitty.presentation.common.BaseFragment
 import com.github.ntngel1.gitty.presentation.common.pagination.Pagination
 import com.github.ntngel1.gitty.presentation.common.pagination.PaginationScrollListener
 import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.callback
+import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.callback1
 import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.ItemAdapter
 import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.render
 import com.github.ntngel1.gitty.presentation.common.recyclerview.item_decorations.SpacingItemDecoration
@@ -29,19 +30,11 @@ class ProfileStarsFragment : BaseFragment(), ProfileStarsView {
     override val layoutId: Int
         get() = R.layout.fragment_profile_stars
 
+    private lateinit var paginationStateToUiAdapter: Pagination.StateToUiAdapter<UserRepositoryEntity>
+
     private val spacingItemDecoration = SpacingItemDecoration()
     private val scrollListener by lazy {
         PaginationScrollListener(presenter::onLoadNextPage)
-    }
-
-    private val paginationStateToUiAdapter by lazy {
-        Pagination.StateToUiAdapter<RepositoryEntity>(
-            shimmer_profile_stars,
-            swipe_refresh_layout_profile_stars,
-            error_stub_profile_stars,
-            empty_content_stub_profile_stars,
-            scrollListener
-        )
     }
 
     private val presenter by moxyPresenter {
@@ -50,11 +43,22 @@ class ProfileStarsFragment : BaseFragment(), ProfileStarsView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupStateToUiAdapter()
         setupRecyclerView()
         setupRefreshListeners()
     }
 
-    override fun setState(state: Pagination.State<RepositoryEntity>) {
+    private fun setupStateToUiAdapter() {
+        Pagination.StateToUiAdapter<UserRepositoryEntity>(
+            shimmer_profile_stars,
+            swipe_refresh_layout_profile_stars,
+            error_stub_profile_stars,
+            empty_content_stub_profile_stars,
+            scrollListener
+        )
+    }
+
+    override fun setState(state: Pagination.State<UserRepositoryEntity>) {
         paginationStateToUiAdapter.render(state, ::showStarredRepositories)
     }
 
@@ -73,7 +77,7 @@ class ProfileStarsFragment : BaseFragment(), ProfileStarsView {
     }
 
     private fun showStarredRepositories(
-        repositories: List<RepositoryEntity>,
+        repositories: List<UserRepositoryEntity>,
         isLoadingNextPage: Boolean,
         isPageLoadingError: Boolean
     ) = recycler_profile_stars.render(spacingItemDecoration = spacingItemDecoration) {
@@ -81,6 +85,7 @@ class ProfileStarsFragment : BaseFragment(), ProfileStarsView {
             .map { repository ->
                 RepositoryItem(
                     id = "starredRepository(${repository.id})",
+                    repositoryId = repository.id,
                     name = repository.name,
                     forkedFromRepositoryName = repository.forkedFromRepositoryName,
                     forkedFromRepositoryOwner = repository.forkedFromRepositoryOwner,
@@ -90,7 +95,10 @@ class ProfileStarsFragment : BaseFragment(), ProfileStarsView {
                     licenseName = repository.licenseName,
                     forksCount = repository.forksCount,
                     starsCount = repository.starsCount,
-                    updatedAt = repository.updatedAt
+                    updatedAt = repository.updatedAt,
+                    onClicked = callback1 { repositoryId ->
+                        presenter.onRepositoryClicked(repositoryId)
+                    }
                 )
             }
             .render(spacingPx = 8.dp)

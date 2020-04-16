@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 9.4.2020
+ * Copyright (c) 16.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -15,7 +15,6 @@ import com.github.ntngel1.gitty.domain.entities.contribution_calendar.Contributi
 import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarEntity
 import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarWeekEntity
 import com.github.ntngel1.gitty.domain.entities.gist.GistEntity
-import com.github.ntngel1.gitty.domain.entities.repository.PinnedRepositoryEntity
 import com.github.ntngel1.gitty.domain.entities.user.*
 import com.github.ntngel1.gitty.domain.gateways.UserGateway
 import com.github.ntngel1.gitty.gateway.utils.emptyListIfNull
@@ -26,12 +25,12 @@ import javax.inject.Inject
 /**
  * This is really dirty, I fucked up.
  */
-class GraphQLUserGateway @Inject constructor(
+class ApolloUserGateway @Inject constructor(
     private val apolloClient: ApolloClient,
     private val sharedPreferences: SharedPreferences
 ) : UserGateway {
 
-    override fun getProfile(login: String): Single<ProfileEntity> {
+    override fun getProfileHeader(login: String): Single<ProfileHeaderEntity> {
         val query = UserProfileQuery(
             avatarUrlSize = 200, // TODO Maybe pass as parameter of method?
             login = login
@@ -43,7 +42,7 @@ class GraphQLUserGateway @Inject constructor(
                 response.data()?.user ?: throw IllegalStateException() // TODO Error handling?
             }
             .map { data ->
-                ProfileEntity(
+                ProfileHeaderEntity(
                     login = data.login,
                     name = data.name,
                     avatarUrl = data.avatarUrl,
@@ -83,7 +82,7 @@ class GraphQLUserGateway @Inject constructor(
         }
     }
 
-    override fun getOverview(login: String): Single<OverviewEntity> {
+    override fun getProfileOverview(login: String): Single<ProfileOverviewEntity> {
         val query = UserOverviewQuery(login)
         return apolloClient.rxQuery(query)
             .subscribeOn(Schedulers.io()) // TODO pass schedulers via constructor
@@ -94,7 +93,7 @@ class GraphQLUserGateway @Inject constructor(
                 val pinnedItems = user.pinnedItems.nodes
                     ?: emptyList()
 
-                OverviewEntity(
+                ProfileOverviewEntity(
                     contributionCalendar = ContributionCalendarEntity(
                         totalContributionCount = user.contributionsCollection.contributionCalendar.totalContributions,
                         colors = user.contributionsCollection.contributionCalendar.colors,
@@ -120,14 +119,15 @@ class GraphQLUserGateway @Inject constructor(
 
                                 PinnableItem.Gist(gist)
                             } else {
-                                val repository = PinnedRepositoryEntity(
-                                    id = item.asRepository!!.id,
-                                    name = item.asRepository.name,
-                                    description = item.asRepository.description,
-                                    languageName = item.asRepository.languages?.nodes?.firstOrNull()?.name,
-                                    languageColor = item.asRepository.languages?.nodes?.firstOrNull()?.color,
-                                    forksCount = item.asRepository.forks.totalCount
-                                )
+                                val repository =
+                                    PinnedRepositoryEntity(
+                                        id = item.asRepository!!.id,
+                                        name = item.asRepository.name,
+                                        description = item.asRepository.description,
+                                        languageName = item.asRepository.languages?.nodes?.firstOrNull()?.name,
+                                        languageColor = item.asRepository.languages?.nodes?.firstOrNull()?.color,
+                                        forksCount = item.asRepository.forks.totalCount
+                                    )
 
                                 PinnableItem.Repository(repository)
                             }
@@ -161,7 +161,7 @@ class GraphQLUserGateway @Inject constructor(
                     repositories = page.nodes.emptyListIfNull()
                         .filterNotNull()
                         .map { repository ->
-                            RepositoryEntity(
+                            UserRepositoryEntity(
                                 id = repository.fragments.repositoryParts.id,
                                 name = repository.fragments.repositoryParts.name,
                                 description = repository.fragments.repositoryParts.description,
@@ -204,7 +204,7 @@ class GraphQLUserGateway @Inject constructor(
                     repositories = page.nodes.emptyListIfNull()
                         .filterNotNull()
                         .map { repository ->
-                            RepositoryEntity(
+                            UserRepositoryEntity(
                                 id = repository.fragments.repositoryParts.id,
                                 name = repository.fragments.repositoryParts.name,
                                 description = repository.fragments.repositoryParts.description,

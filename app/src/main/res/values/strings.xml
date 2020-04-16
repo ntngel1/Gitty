@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 8.4.2020
+  ~ Copyright (c) 16.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
@@ -10,7 +10,7 @@
     <string name="auth_authorize_with_your_account">Please, authorize with your GitHub-account</string>
     <string name="auth_authorize">Authorize</string>
 
-    <string name="profile_overview">Overview</string>
+    <string name="overview">Overview</string>
     <string name="profile_repositories">Repositories</string>
     <string name="profile_repositories_with_count">Repositories (%1$d)</string>
     <string name="profile_projects_with_count">Projects (%1$d)</string>
@@ -26,7 +26,7 @@
 
     <string name="forks_truncated">%1$d+ forks</string>
     <string name="pinned">Pinned</string>
-    <string name="profile_repositories_forked_from">"Forked from %1$s/%2$s"</string>
+    <string name="forked_from">"Forked from %1$s/%2$s"</string>
     <string name="stars_truncated">%1$d+ stars</string>
     <string name="empty_data">Here is empty</string>
     <string name="refresh">Refresh</string>
@@ -37,6 +37,27 @@
     <string name="updated_on">Updated on %1$s</string>
     <string name="unable_to_load_data">Unable to load data</string>
     <string name="try_again">Try again</string>
+
+    <string name="watch">Watch</string>
+    <string name="star">Star</string>
+    <string name="star_with_count">Star (%1$d)</string>
+    <string name="unstar">Unstar (%1$d)</string>
+    <string name="fork_with_count">Fork (%1$d)</string>
+    <string name="fork">Fork</string>
+    <string name="repository_code">Code</string>
+    <string name="repository_issues_with_count">Issues (%1$d)</string>
+    <string name="repository_issues">Issues</string>
+    <string name="repository_pull_requests_with_count">Pull Requests (%1$d)</string>
+    <string name="repository_pull_requests">Pull Requests</string>
+    <string name="repository_actions">Actions</string>
+    <string name="repository_projects_with_count">Projects (%1$d)</string>
+    <string name="repository_projects">Projects</string>
+    <string name="repository_wiki">Wiki</string>
+    <string name="repository_security">Security</string>
+    <string name="repository_insights">Insights</string>
+    <string name="settings">Settings</string>
+    <string name="unwatch">Unwatch</string>
+    <string name="stop_ignoring">Stop ignoring</string>
 
     <plurals name="days">
         <item quantity="one">%1$d day</item>

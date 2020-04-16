@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 9.4.2020
+ * Copyright (c) 16.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -9,8 +9,8 @@ package com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.overv
 import android.os.Bundle
 import android.view.View
 import com.github.ntngel1.gitty.R
-import com.github.ntngel1.gitty.domain.entities.user.OverviewEntity
 import com.github.ntngel1.gitty.domain.entities.user.PinnableItem
+import com.github.ntngel1.gitty.domain.entities.user.ProfileOverviewEntity
 import com.github.ntngel1.gitty.presentation.common.BaseFragment
 import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.ItemAdapter
 import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.render
@@ -49,7 +49,7 @@ class ProfileOverviewFragment : BaseFragment(),
         }
     }
 
-    override fun setOverview(overview: OverviewEntity) {
+    override fun setOverview(profileOverview: ProfileOverviewEntity) {
         shimmer_profile_overview.gone()
         swipe_refresh_layout_profile_overview.visible()
 
@@ -59,7 +59,7 @@ class ProfileOverviewFragment : BaseFragment(),
             spacing(16.dp)
             PinnedHeaderItem().render()
 
-            overview.pinnedItems
+            profileOverview.pinnedItems
                 .map { pinnableItem ->
                     when (pinnableItem) {
                         is PinnableItem.Repository -> {

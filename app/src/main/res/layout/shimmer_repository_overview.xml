@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 16.4.2020
+  ~ This file created by Kirill Shepelev (aka ntngel1)
+  ~ ntngel1@gmail.com
+  -->
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_repository_overview_header_owner"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorShimmerBackground"
+            android:drawableEnd="@drawable/ic_arrow_right_black"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="ntngel1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_repository_overview_header_forked_from"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@color/colorShimmerBackground"
+            android:drawableEnd="@drawable/ic_arrow_right_black"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="forked from ntngel1/Gitty" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_repository_overview_header_description"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorShimmerBackground"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="GitHub client for Android" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_repository_overview_header_star"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:clickable="false"
+            android:paddingHorizontal="8dp"
+            android:text="@string/star"
+            app:icon="@drawable/ic_star_border_white"
+            app:iconGravity="textStart" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_repository_overview_header_fork"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:paddingHorizontal="8dp"
+            android:text="@string/fork"
+            app:icon="@drawable/ic_repository_forked_black"
+            app:iconGravity="textStart" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_repository_overview_header_watch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:paddingHorizontal="8dp"
+            android:text="@string/watch"
+            app:icon="@drawable/ic_eye_black"
+            app:iconGravity="textStart" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="190dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/colorShimmerBackground" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="900dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorShimmerBackground" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 16.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.github.ntngel1.gitty.R
-import com.github.ntngel1.gitty.domain.entities.user.ProfileEntity
+import com.github.ntngel1.gitty.domain.entities.user.ProfileHeaderEntity
 import com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.followers.ProfileFollowersFragment
 import com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.following.ProfileFollowingFragment
 import com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.overview.ProfileOverviewFragment
@@ -48,20 +48,20 @@ class ProfileViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragmen
         /**
          * Setups TabLayout for Profile screen.
          *
-         * @param profile using it to display counts (repositories count, projects count, etc)
+         * @param profileHeader using it to display counts (repositories count, projects count, etc)
          *                    inside tab title. If null, counts will not be displayed.
          */
         fun setupTabLayout(
             tabLayout: TabLayout,
             viewPager: ViewPager2,
-            profile: ProfileEntity? = null
+            profileHeader: ProfileHeaderEntity? = null
         ) = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
                 POSITION_OVERVIEW -> {
-                    tabLayout.string(R.string.profile_overview)
+                    tabLayout.string(R.string.overview)
                 }
                 POSITION_REPOSITORIES -> {
-                    profile?.repositoriesCount?.let { repositoriesCount ->
+                    profileHeader?.repositoriesCount?.let { repositoriesCount ->
                         tabLayout.string(
                             R.string.profile_repositories_with_count,
                             repositoriesCount
@@ -69,12 +69,12 @@ class ProfileViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragmen
                     } ?: tabLayout.string(R.string.profile_repositories)
                 }
                 POSITION_PROJECTS -> {
-                    profile?.projectsCount?.let { projectsCount ->
+                    profileHeader?.projectsCount?.let { projectsCount ->
                         tabLayout.string(R.string.profile_projects_with_count, projectsCount)
                     } ?: tabLayout.string(R.string.profile_projects)
                 }
                 POSITION_STARRED_REPOSITORIES -> {
-                    profile?.starredRepositoriesCount?.let { starredRepositoriesCount ->
+                    profileHeader?.starredRepositoriesCount?.let { starredRepositoriesCount ->
                         tabLayout.string(
                             R.string.profile_starred_repositories_with_count,
                             starredRepositoriesCount
@@ -82,12 +82,12 @@ class ProfileViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragmen
                     } ?: tabLayout.string(R.string.profile_starred_repositories)
                 }
                 POSITION_FOLLOWERS -> {
-                    profile?.followersCount?.let { followersCount ->
+                    profileHeader?.followersCount?.let { followersCount ->
                         tabLayout.string(R.string.profile_followers_with_count, followersCount)
                     } ?: tabLayout.string(R.string.profile_followers)
                 }
                 POSITION_FOLLOWING -> {
-                    profile?.followingCount?.let { followingCount ->
+                    profileHeader?.followingCount?.let { followingCount ->
                         tabLayout.string(R.string.profile_following_with_count, followingCount)
                     } ?: tabLayout.string(R.string.profile_following)
                 }

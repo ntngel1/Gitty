@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 16.4.2020
+ * This file created by Kirill Shepelev (aka ntngel1)
+ * ntngel1@gmail.com
+ */
+
+package com.github.ntngel1.gitty.domain.gateways
+
+import com.github.ntngel1.gitty.domain.entities.repository.RepositoryHeaderEntity
+import com.github.ntngel1.gitty.domain.entities.repository.RepositoryOverviewEntity
+import io.reactivex.Single
+
+interface RepositoryGateway {
+    fun getRepositoryHeader(id: String): Single<RepositoryHeaderEntity>
+    fun getRepositoryOverview(id: String): Single<RepositoryOverviewEntity>
+}

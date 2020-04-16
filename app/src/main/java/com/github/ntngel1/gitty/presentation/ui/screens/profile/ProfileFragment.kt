@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 6.4.2020
+ * Copyright (c) 16.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -11,7 +11,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.github.ntngel1.gitty.R
-import com.github.ntngel1.gitty.domain.entities.user.ProfileEntity
+import com.github.ntngel1.gitty.domain.entities.user.ProfileHeaderEntity
 import com.github.ntngel1.gitty.presentation.common.BaseFragment
 import com.github.ntngel1.gitty.presentation.di.modules.ProfileModule
 import com.github.ntngel1.gitty.presentation.ui.screens.profile.viewpager.ProfileViewPagerAdapter
@@ -53,36 +53,34 @@ class ProfileFragment : BaseFragment(), ProfileView {
         setupViewPager()
     }
 
-    override fun setProfileHeader(profile: ProfileEntity) {
+    override fun setProfileHeader(profileHeader: ProfileHeaderEntity) {
         shimmer_profile_header.hideShimmer()
 
         // Removing background that are used for shimmer layout
         textview_profile_name.background = null
         textview_profile_status.background = null
 
-        textview_profile_name.text = profile.name
-        textview_profile_status.text = "${profile.status.emoji} ${profile.status.message}"
+        textview_profile_name.text = profileHeader.name
+        textview_profile_status.text =
+            "${profileHeader.status.emoji} ${profileHeader.status.message}" // FIXME
 
         Glide.with(imageview_profile_avatar)
-            .load(profile.avatarUrl)
+            .load(profileHeader.avatarUrl)
             .fitCenter()
             .into(imageview_profile_avatar)
 
-        ProfileViewPagerAdapter.setupTabLayout(tablayout_profile, viewpager_profile, profile)
+        ProfileViewPagerAdapter.setupTabLayout(tablayout_profile, viewpager_profile, profileHeader)
     }
 
     private fun setupViewPager() {
-        viewpager_profile.adapter =
-            ProfileViewPagerAdapter(
-                this
-            )
+        viewpager_profile.adapter = ProfileViewPagerAdapter(this)
         ProfileViewPagerAdapter.setupTabLayout(tablayout_profile, viewpager_profile)
     }
 
     private fun setupToolbar() {
         toolbar_profile.setup(title = userLogin, onBackClicked = router::exit)
         toolbar_profile.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId) {
+            when (menuItem.itemId) {
                 R.id.menu_profile_details -> {
                 }
                 R.id.menu_profile_copy_link -> {

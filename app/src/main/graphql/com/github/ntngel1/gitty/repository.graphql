@@ -1,0 +1,51 @@
+query repositoryHeader($id: ID!) {
+    node(id: $id) {
+        ... on Repository {
+            viewerCanAdminister
+
+            issues(states: [OPEN]) {
+                totalCount
+            }
+
+            pullRequests(states: [OPEN]) {
+                totalCount
+            }
+
+            projects(states: [OPEN]) {
+                totalCount
+            }
+        }
+    }
+}
+
+query repositoryOverview($id: ID!) {
+    node(id: $id) {
+        ... on Repository {
+            forkCount
+            description
+            viewerSubscription
+            viewerHasStarred
+            viewerCanAdminister
+
+            parent {
+                name
+                owner {
+                    login
+                }
+            }
+
+            owner {
+                avatarUrl(size: 128)
+                login
+            }
+
+            watchers {
+                totalCount
+            }
+
+            stargazers {
+                totalCount
+            }
+        }
+    }
+}

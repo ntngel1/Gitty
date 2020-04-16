@@ -1,12 +1,12 @@
 <!--
-  ~ Copyright (c) 5.4.2020
+  ~ Copyright (c) 16.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="32dp"
+    android:width="16dp"
+    android:height="24dp"
     android:viewportWidth="768"
     android:viewportHeight="1024">
     <path
