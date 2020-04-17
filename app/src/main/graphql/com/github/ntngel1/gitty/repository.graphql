@@ -29,6 +29,7 @@ query repositoryOverview($id: ID!) {
 
             parent {
                 name
+                id
                 owner {
                     login
                 }
@@ -46,6 +47,68 @@ query repositoryOverview($id: ID!) {
             stargazers {
                 totalCount
             }
+
+            defaultBranchRef {
+                name
+            }
         }
     }
 }
+
+query repositoryReadmeMd(
+    $id: ID!, 
+    $lowercaseExpression: String!, 
+    $uppercaseExpression: String!
+) {
+    node(id: $id) {
+        ... on Repository {
+            uppercaseObject: object(expression: $uppercaseExpression) {
+                ... on Blob {
+                    text
+                }
+            }
+
+            lowercaseObject: object(expression: $lowercaseExpression) {
+                ... on Blob {
+                    text
+                }
+            }
+        }
+    }
+}
+
+mutation starRepository($starrableId: ID!) {
+    addStar(
+        input: {
+            starrableId: $starrableId
+        }
+    ) {
+        starrable {
+            ... on Repository {
+                viewerHasStarred
+                stargazers {
+                    totalCount
+                }
+            }
+        }
+    }
+}
+
+mutation unstarRepository($starrableId: ID!) {
+    removeStar(
+        input: {
+            starrableId: $starrableId
+        }
+    ) {
+        starrable {
+            ... on Repository {
+                viewerHasStarred
+                stargazers {
+                    totalCount
+                }
+            }
+        }
+    }
+}
+
+

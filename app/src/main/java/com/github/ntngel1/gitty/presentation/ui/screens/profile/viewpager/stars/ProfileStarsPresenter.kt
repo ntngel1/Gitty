@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 16.4.2020
+ * Copyright (c) 17.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -37,7 +37,10 @@ class ProfileStarsPresenter @Inject constructor(
         getUserStarredRepositories(userLogin, PAGE_LIMIT, cursor = null)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
-                currentState = Pagination.reduce(currentState, Pagination.Action.Refresh)
+                currentState = Pagination.reduce(
+                    currentState,
+                    Pagination.Action.Refresh
+                )
             }
             .logErrors()
             .subscribe({ repositoriesPage ->
@@ -99,7 +102,11 @@ class ProfileStarsPresenter @Inject constructor(
     }
 
     fun onRepositoryClicked(repositoryId: String) {
-        TODO("Not yet implemented")
+        val repositoryName = currentState.items.find { it.id == repositoryId }
+            ?.name
+            ?: return
+
+        viewState.showRepositoryScreen(repositoryName, repositoryId)
     }
 
     companion object {

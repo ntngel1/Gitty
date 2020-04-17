@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 16.4.2020
+ * Copyright (c) 17.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -18,17 +18,23 @@ import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapte
 import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.core.ItemAdapter
 import com.github.ntngel1.gitty.presentation.common.recyclerview.delegate_adapter.render
 import com.github.ntngel1.gitty.presentation.common.recyclerview.item_decorations.SpacingItemDecoration
+import com.github.ntngel1.gitty.presentation.ui.Screens
 import com.github.ntngel1.gitty.presentation.ui.recyclerview.LoadingErrorItem
 import com.github.ntngel1.gitty.presentation.ui.recyclerview.ProgressBarItem
 import com.github.ntngel1.gitty.presentation.ui.screens.profile.recyclerview.RepositoryItem
 import com.github.ntngel1.gitty.presentation.utils.dp
 import kotlinx.android.synthetic.main.fragment_profile_stars.*
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 class ProfileStarsFragment : BaseFragment(), ProfileStarsView {
 
     override val layoutId: Int
         get() = R.layout.fragment_profile_stars
+
+    @Inject
+    lateinit var router: Router
 
     private lateinit var paginationStateToUiAdapter: Pagination.StateToUiAdapter<UserRepositoryEntity>
 
@@ -41,6 +47,11 @@ class ProfileStarsFragment : BaseFragment(), ProfileStarsView {
         scope.getInstance(ProfileStarsPresenter::class.java)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        scope.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupStateToUiAdapter()
@@ -48,18 +59,27 @@ class ProfileStarsFragment : BaseFragment(), ProfileStarsView {
         setupRefreshListeners()
     }
 
+    override fun setState(state: Pagination.State<UserRepositoryEntity>) {
+        paginationStateToUiAdapter.render(state, ::showStarredRepositories)
+    }
+
+    override fun showRepositoryScreen(repositoryName: String, repositoryId: String) {
+        router.navigateTo(
+            Screens.Repository(
+                repositoryName = repositoryName,
+                repositoryId = repositoryId
+            )
+        )
+    }
+
     private fun setupStateToUiAdapter() {
-        Pagination.StateToUiAdapter<UserRepositoryEntity>(
+        paginationStateToUiAdapter = Pagination.StateToUiAdapter(
             shimmer_profile_stars,
             swipe_refresh_layout_profile_stars,
             error_stub_profile_stars,
             empty_content_stub_profile_stars,
             scrollListener
         )
-    }
-
-    override fun setState(state: Pagination.State<UserRepositoryEntity>) {
-        paginationStateToUiAdapter.render(state, ::showStarredRepositories)
     }
 
     private fun setupRefreshListeners() {

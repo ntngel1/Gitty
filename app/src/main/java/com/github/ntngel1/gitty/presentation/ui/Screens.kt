@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 16.4.2020
+ * Copyright (c) 17.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -23,9 +23,9 @@ object Screens {
     }
 
     data class Profile(
-        val userLogin: String
+        val userName: String
     ) : SupportAppScreen() {
-        override fun getFragment() = ProfileFragment.newInstance(userLogin)
+        override fun getFragment() = ProfileFragment.newInstance(userName)
     }
 
     data class Repository(
