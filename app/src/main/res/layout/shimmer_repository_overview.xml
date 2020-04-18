@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 16.4.2020
+  ~ Copyright (c) 18.4.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
@@ -19,23 +19,17 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_repository_overview_header_owner"
             android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:background="@color/colorShimmerBackground"
-            android:drawableEnd="@drawable/ic_arrow_right_black"
-            android:gravity="center_vertical"
-            android:includeFontPadding="false"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             tools:text="ntngel1" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_repository_overview_header_forked_from"
             android:layout_width="170dp"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginTop="4dp"
             android:background="@color/colorShimmerBackground"
-            android:drawableEnd="@drawable/ic_arrow_right_black"
-            android:gravity="center_vertical"
-            android:includeFontPadding="false"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             tools:text="forked from ntngel1/Gitty" />
 

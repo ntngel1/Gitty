@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 16.4.2020
+ * Copyright (c) 18.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -56,8 +56,10 @@ class ProfileOverviewFragment : BaseFragment(),
         recyclerview_profile_overview.render(
             spacingItemDecoration = spacingItemDecoration
         ) {
-            spacing(16.dp)
-            PinnedHeaderItem().render()
+            if (profileOverview.pinnedItems.isNotEmpty()) {
+                spacing(16.dp)
+                PinnedHeaderItem().render()
+            }
 
             profileOverview.pinnedItems
                 .map { pinnableItem ->

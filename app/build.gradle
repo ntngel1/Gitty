@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 17.4.2020
+ * Copyright (c) 18.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -45,10 +45,10 @@ android {
 apollo {
     generateKotlinModels.set(true)
     customTypeMapping = [
-            "ID" : "kotlin.String",
-            "URI" : "kotlin.String",
-            "Date" : "org.threeten.bp.LocalDate",
-            "DateTime" : "org.threeten.bp.Instant"
+            "ID"      : "kotlin.String",
+            "URI"     : "kotlin.String",
+            "Date"    : "org.threeten.bp.LocalDate",
+            "DateTime": "org.threeten.bp.Instant"
     ]
 }
 
@@ -128,4 +128,10 @@ dependencies {
     implementation("io.noties.markwon:syntax-highlight:$markwonVersion") {
         exclude group: 'org.jetbrains', module: 'annotations-java5'
     }
+
+    def prismVersion = "2.0.0"
+    implementation("io.noties:prism4j:$prismVersion") {
+        exclude group: 'org.jetbrains', module: 'annotations-java5'
+    }
+    kapt "io.noties:prism4j-bundler:$prismVersion"
 }
