@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 17.4.2020
+ * Copyright (c) 28.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -20,6 +20,8 @@ import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_ove
 import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_overview.GetRepositoryOverviewInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_readme_md.GetRepositoryReadmeMdInteractor
 import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_readme_md.GetRepositoryReadmeMdInteractorImp
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_tree.GetRepositoryTreeInteractor
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_tree.GetRepositoryTreeInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.repository.star_repository.StarRepositoryInteractor
 import com.github.ntngel1.gitty.domain.interactors.repository.star_repository.StarRepositoryInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.repository.unstar_repository.UnstarRepositoryInteractor
@@ -81,5 +83,8 @@ class InteractorModule : Module() {
 
         bind<GetRepositoryReadmeMdInteractor>()
             .toClass<GetRepositoryReadmeMdInteractorImp>()
+
+        bind<GetRepositoryTreeInteractor>()
+            .toClass<GetRepositoryTreeInteractorImp>()
     }
 }

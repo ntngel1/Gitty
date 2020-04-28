@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 16.4.2020
+ * Copyright (c) 28.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -33,6 +33,10 @@ class RepositoryFragment : BaseFragment(), RepositoryView {
     private val repositoryName by argument<String>(REPOSITORY_NAME_KEY)
     private val repositoryId by argument<String>(REPOSITORY_ID_KEY)
 
+    private val repositoryViewPagerAdapter by lazy {
+        RepositoryViewPagerAdapter(this)
+    }
+
     private val presenter by moxyPresenter {
         scope.getInstance(RepositoryPresenter::class.java)
     }
@@ -54,6 +58,7 @@ class RepositoryFragment : BaseFragment(), RepositoryView {
     }
 
     override fun setRepositoryHeader(repositoryHeader: RepositoryHeaderEntity) {
+        repositoryViewPagerAdapter.isSettingsScreenVisible = repositoryHeader.isCurrentUserAdmin
         RepositoryViewPagerAdapter.setupTabLayout(
             tablayout_repository,
             viewpager_repository,
@@ -62,7 +67,7 @@ class RepositoryFragment : BaseFragment(), RepositoryView {
     }
 
     private fun setupViewPager() {
-        viewpager_repository.adapter = RepositoryViewPagerAdapter(this)
+        viewpager_repository.adapter = repositoryViewPagerAdapter
         RepositoryViewPagerAdapter.setupTabLayout(
             tablayout_repository,
             viewpager_repository,

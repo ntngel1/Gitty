@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 9.4.2020
+ * Copyright (c) 28.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -42,8 +42,12 @@ class ItemsBuilder(
         items.add(this)
     }
 
-    fun List<Item<*>>.render(spacingPx: Int = 0) {
+    fun List<Item<*>>.render(spacingPx: Int = 0, withDivider: Boolean = false) {
         this.forEach { item ->
+            if (withDivider) {
+                divider()
+            }
+
             spacing(spacingPx)
             items.add(item)
         }
@@ -55,11 +59,11 @@ class ItemsBuilder(
     }
 
     fun spacing(px: Int) {
-        checkNotNull(spacingItemDecoration)
-
         if (px <= 0) {
             return
         }
+
+        checkNotNull(spacingItemDecoration)
 
         if (spacings.containsKey(items.size)) {
             spacings[items.size] = spacings.get(items.size)!! + px

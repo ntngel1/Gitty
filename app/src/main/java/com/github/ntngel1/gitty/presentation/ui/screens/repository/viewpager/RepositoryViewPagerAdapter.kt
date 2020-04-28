@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 16.4.2020
+ * Copyright (c) 28.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -11,6 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.github.ntngel1.gitty.R
 import com.github.ntngel1.gitty.domain.entities.repository.RepositoryHeaderEntity
+import com.github.ntngel1.gitty.presentation.ui.screens.repository.viewpager.code.RepositoryCodeFragment
 import com.github.ntngel1.gitty.presentation.ui.screens.repository.viewpager.overview.RepositoryOverviewFragment
 import com.github.ntngel1.gitty.presentation.utils.string
 import com.google.android.material.tabs.TabLayout
@@ -28,10 +29,12 @@ class RepositoryViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(frag
         position: Int
     ): Fragment = when (position) {
         POSITION_OVERVIEW -> RepositoryOverviewFragment()
+        POSITION_CODE -> RepositoryCodeFragment()
         else -> throw IllegalStateException("No such fragment for position $position")
     }
 
     override fun getItemCount(): Int {
+        return 2 // TODO REMOVE
         return if (isSettingsScreenVisible) 10 else 9
     }
 

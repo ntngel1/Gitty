@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 17.4.2020
+ * Copyright (c) 28.4.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -10,6 +10,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.rxMutate
 import com.apollographql.apollo.rx2.rxQuery
 import com.github.ntngel1.gitty.*
+import com.github.ntngel1.gitty.domain.entities.repository.FileTreeEntry
 import com.github.ntngel1.gitty.domain.entities.repository.RepositoryHeaderEntity
 import com.github.ntngel1.gitty.domain.entities.repository.RepositoryOverviewEntity
 import com.github.ntngel1.gitty.domain.entities.repository.RepositorySubscription
@@ -18,6 +19,7 @@ import com.github.ntngel1.gitty.domain.interactors.repository.star_repository.St
 import com.github.ntngel1.gitty.domain.interactors.repository.unstar_repository.UnstarRepositoryInteractor
 import com.github.ntngel1.gitty.type.SubscriptionState
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -139,5 +141,40 @@ class ApolloRepositoryGateway @Inject constructor(
                     Maybe.empty()
                 }
             }
+    }
+
+    override fun getRepositoryTree(
+        id: String,
+        branchName: String,
+        path: String
+    ): Single<List<FileTreeEntry>> {
+        val expression = "$branchName:$path"
+        val query = RepositoryTreeQuery(
+            id = id,
+            expression = expression
+        )
+
+        return apolloClient.rxQuery(query)
+            .subscribeOn(Schedulers.io())
+            .map { response ->
+                response.data()?.node?.asRepository?.object_?.asTree?.entries
+                    ?: error("TODO Error handling")
+            }
+            .flatMap { entries ->
+                Observable.fromIterable(entries)
+            }
+            .map { entry ->
+                entry.object_?.asBlob?.let { blob ->
+                    FileTreeEntry.Blob(
+                        name = entry.name,
+                        id = entry.oid,
+                        byteSize = blob.byteSize
+                    )
+                } ?: FileTreeEntry.Folder(
+                    id = entry.oid,
+                    name = entry.name
+                )
+            }
+            .toList()
     }
 }

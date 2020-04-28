@@ -77,6 +77,29 @@ query repositoryReadmeMd(
     }
 }
 
+query repositoryTree(
+    $id: ID!,
+    $expression: String!
+) {
+    node(id: $id) {
+        ... on Repository {
+            object(expression: $expression) {
+                ... on Tree {
+                    entries {
+                        name
+                        oid
+                        object {
+                            ... on Blob {
+                                byteSize
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 mutation starRepository($starrableId: ID!) {
     addStar(
         input: {
