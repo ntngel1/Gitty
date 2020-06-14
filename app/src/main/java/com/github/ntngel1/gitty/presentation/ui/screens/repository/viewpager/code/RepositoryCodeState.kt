@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 28.4.2020
+ * Copyright (c) 14.6.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -14,5 +14,7 @@ data class RepositoryCodeState(
     val visibleFileTree: List<FileTreeEntry>? = null,
     val shouldDisplayBackButton: Boolean = false,
     val isLoading: Boolean = true,
-    val error: Throwable? = null
+    val error: Throwable? = null,
+    val branch: String? = null,
+    val allBranches: List<String> = emptyList()
 )

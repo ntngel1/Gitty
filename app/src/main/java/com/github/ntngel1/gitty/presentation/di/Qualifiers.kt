@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 16.4.2020
+ * Copyright (c) 14.6.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -15,7 +15,4 @@ annotation class UserLogin
 annotation class RepositoryId
 
 @Qualifier
-annotation class UiScheduler
-
-@Qualifier
-annotation class IoScheduler
+annotation class RefName

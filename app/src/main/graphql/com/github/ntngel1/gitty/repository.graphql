@@ -100,6 +100,38 @@ query repositoryTree(
     }
 }
 
+query repositoryDefaultBranch($id: ID!) {
+    node(id: $id) {
+        ... on Repository {
+            defaultBranchRef {
+                name
+            }
+        }
+    }
+}
+
+query repositoryRefs(
+    $id: ID!,
+    $limit: Int!,
+    $cursor: String,
+    $refPrefix: String!
+) {
+    node(id: $id) {
+        ... on Repository {
+            refs(first: $limit, after: $cursor, refPrefix: $refPrefix) {
+                pageInfo {
+                    hasNextPage
+                    endCursor
+                }
+
+                nodes {
+                    name
+                }
+            }
+        }
+    } 
+}
+
 mutation starRepository($starrableId: ID!) {
     addStar(
         input: {

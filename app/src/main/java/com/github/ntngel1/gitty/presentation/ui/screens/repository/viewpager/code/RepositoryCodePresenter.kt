@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 28.4.2020
+ * Copyright (c) 14.6.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -7,6 +7,7 @@
 package com.github.ntngel1.gitty.presentation.ui.screens.repository.viewpager.code
 
 import com.github.ntngel1.gitty.domain.entities.repository.FileTreeEntry
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_default_branch.GetRepositoryDefaultBranchInteractor
 import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_tree.GetRepositoryTreeInteractor
 import com.github.ntngel1.gitty.presentation.common.BasePresenter
 import com.github.ntngel1.gitty.presentation.di.RepositoryId
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @InjectViewState
 class RepositoryCodePresenter @Inject constructor(
     @RepositoryId private val repositoryId: String,
+    private val getRepositoryDefaultBranch: GetRepositoryDefaultBranchInteractor,
     private val getRepositoryTree: GetRepositoryTreeInteractor
 ) : BasePresenter<RepositoryCodeView>() {
 
@@ -32,12 +34,32 @@ class RepositoryCodePresenter @Inject constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        loadRepositoryTree()
+        loadDefaultBranchTree()
+    }
+
+    private fun loadDefaultBranchTree() {
+        getRepositoryDefaultBranch(repositoryId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                currentState = currentState.copy(
+                    isLoading = true,
+                    error = null
+                )
+            }
+            .subscribe({ defaultRepositoryBranch ->
+                currentState = currentState.copy(branch = defaultRepositoryBranch)
+                loadRepositoryTree()
+            }, { throwable ->
+                currentState = currentState.copy(isLoading = false, error = throwable)
+            })
+            .disposeOnDestroy()
     }
 
     private fun loadRepositoryTree() {
-        // TODO Branch selection
-        getRepositoryTree(repositoryId, "master", currentState.path)
+        val currentBranch = currentState.branch
+            ?: return
+
+        getRepositoryTree(repositoryId, currentBranch, currentState.path)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
                 currentState = currentState.copy(
@@ -134,6 +156,10 @@ class RepositoryCodePresenter @Inject constructor(
     }
 
     fun onTryAgainClicked() {
-        loadRepositoryTree()
+        if (currentState.branch != null) {
+            loadRepositoryTree()
+        } else {
+            loadDefaultBranchTree()
+        }
     }
 }

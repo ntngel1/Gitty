@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 17.4.2020
+ * Copyright (c) 14.6.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -47,7 +47,7 @@ class ProfileStarsPresenter @Inject constructor(
                 currentState = Pagination.reduce(
                     currentState,
                     Pagination.Action.Refreshed(
-                        items = repositoriesPage.repositories,
+                        items = repositoriesPage.items,
                         nextPageCursor = if (repositoriesPage.hasNextPage) {
                             repositoriesPage.cursor
                         } else {
@@ -84,7 +84,7 @@ class ProfileStarsPresenter @Inject constructor(
                 currentState = Pagination.reduce(
                     currentState,
                     Pagination.Action.PageLoaded(
-                        items = repositoriesPage.repositories,
+                        items = repositoriesPage.items,
                         nextPageCursor = if (repositoriesPage.hasNextPage) {
                             repositoriesPage.cursor
                         } else {

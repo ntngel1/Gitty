@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 16.4.2020
+  ~ Copyright (c) 14.6.2020
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
@@ -58,6 +58,8 @@
     <string name="settings">Settings</string>
     <string name="unwatch">Unwatch</string>
     <string name="stop_ignoring">Stop ignoring</string>
+    <string name="branches">Branches</string>
+    <string name="tags">Tags</string>
 
     <plurals name="days">
         <item quantity="one">%1$d day</item>

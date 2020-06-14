@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 28.4.2020
+ * Copyright (c) 14.6.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -14,6 +14,10 @@ import com.github.ntngel1.gitty.domain.interactors.authorization.get_authorizati
 import com.github.ntngel1.gitty.domain.interactors.authorization.get_authorization_url.GetAuthorizationUrlInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.authorization.is_authorized.IsAuthorizedInteractor
 import com.github.ntngel1.gitty.domain.interactors.authorization.is_authorized.IsAuthorizedInteractorImp
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_branches.GetRepositoryRefsInteractor
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_branches.GetRepositoryRefsInteractorImp
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_default_branch.GetRepositoryDefaultBranchInteractor
+import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_default_branch.GetRepositoryDefaultBranchInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_header.GetRepositoryHeaderInteractor
 import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_header.GetRepositoryHeaderInteractorImp
 import com.github.ntngel1.gitty.domain.interactors.repository.get_repository_overview.GetRepositoryOverviewInteractor
@@ -86,5 +90,11 @@ class InteractorModule : Module() {
 
         bind<GetRepositoryTreeInteractor>()
             .toClass<GetRepositoryTreeInteractorImp>()
+
+        bind<GetRepositoryDefaultBranchInteractor>()
+            .toClass<GetRepositoryDefaultBranchInteractorImp>()
+
+        bind<GetRepositoryRefsInteractor>()
+            .toClass<GetRepositoryRefsInteractorImp>()
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 28.4.2020
+ * Copyright (c) 14.6.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -7,9 +7,11 @@
 package com.github.ntngel1.gitty.gateway.graphql
 
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.rxMutate
 import com.apollographql.apollo.rx2.rxQuery
 import com.github.ntngel1.gitty.*
+import com.github.ntngel1.gitty.domain.entities.common.Page
 import com.github.ntngel1.gitty.domain.entities.repository.FileTreeEntry
 import com.github.ntngel1.gitty.domain.entities.repository.RepositoryHeaderEntity
 import com.github.ntngel1.gitty.domain.entities.repository.RepositoryOverviewEntity
@@ -176,5 +178,53 @@ class ApolloRepositoryGateway @Inject constructor(
                 )
             }
             .toList()
+    }
+
+    override fun getRepositoryRefs(
+        id: String,
+        limit: Int,
+        cursor: String?,
+        refPrefix: String
+    ): Single<Page<String>> {
+        val query = RepositoryRefsQuery(
+            id = id,
+            limit = limit,
+            cursor = Input.optional(cursor),
+            refPrefix = refPrefix
+        )
+
+        return apolloClient.rxQuery(query)
+            .observeOn(Schedulers.io())
+            .map { response ->
+                response.data()?.node?.asRepository?.refs ?: error("TODO Error handling")
+            }
+            .map { refs ->
+                Page(
+                    hasNextPage = refs.pageInfo.hasNextPage,
+                    cursor = refs.pageInfo.endCursor,
+                    items = refs.nodes
+                        ?.mapNotNull { ref ->
+                            ref?.name
+                        }
+                        ?: emptyList()
+                )
+            }
+            .singleOrError()
+    }
+
+    override fun getRepositoryDefaultBranch(id: String): Maybe<String> {
+        val query = RepositoryDefaultBranchQuery(id = id)
+
+        return apolloClient.rxQuery(query)
+            .observeOn(Schedulers.io())
+            .map { response ->
+                response.data()?.node?.asRepository ?: error("TODO Error handling")
+            }
+            .singleOrError()
+            .flatMapMaybe { repository ->
+                repository.defaultBranchRef?.name?.let { defaultBranchName ->
+                    Maybe.just(defaultBranchName)
+                } ?: Maybe.empty()
+            }
     }
 }

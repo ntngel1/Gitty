@@ -13,40 +13,40 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import com.github.ntngel1.gitty.presentation.di.Scopes
 import com.github.ntngel1.gitty.presentation.utils.objectScopeName
-import moxy.MvpAppCompatFragment
+import moxy.MvpBottomSheetDialogFragment
 import timber.log.Timber
 import toothpick.Scope
 import toothpick.Toothpick
 
-abstract class BaseFragment : MvpAppCompatFragment() {
+abstract class BaseBottomSheetDialogFragment : MvpBottomSheetDialogFragment() {
 
     @get:LayoutRes
     abstract val layoutId: Int
-
-    lateinit var fragmentScopeName: String
 
     protected lateinit var scope: Scope
         private set
 
     private var isInstanceStateSaved = false
+    private lateinit var dialogScopeName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        fragmentScopeName = savedInstanceState?.getString(FRAGMENT_SCOPE_NAME_KEY)
+        dialogScopeName = savedInstanceState?.getString(DIALOG_SCOPE_NAME_KEY)
             ?: objectScopeName()
 
-        scope = if (Toothpick.isScopeOpen(fragmentScopeName)) {
-            Timber.d("Using existing UI scope: $fragmentScopeName")
-            Toothpick.openScope(fragmentScopeName)
+        scope = if (Toothpick.isScopeOpen(dialogScopeName)) {
+            Timber.d("Using existing UI scope: $dialogScopeName")
+            Toothpick.openScope(dialogScopeName)
         } else {
-            Timber.d("Creating UI scope: $fragmentScopeName -> ${parentFragmentScopeName()}")
-            Toothpick.openScopes(parentFragmentScopeName(), fragmentScopeName)
+            Timber.d("Creating UI scope: $dialogScopeName -> ${parentFragmentScopeName()}")
+            Toothpick.openScopes(parentFragmentScopeName(), dialogScopeName)
                 .also(::initScope)
         }
+
 
         super.onCreate(savedInstanceState)
     }
 
-    final override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,21 +59,21 @@ abstract class BaseFragment : MvpAppCompatFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(FRAGMENT_SCOPE_NAME_KEY, fragmentScopeName)
+        outState.putString(DIALOG_SCOPE_NAME_KEY, dialogScopeName)
         isInstanceStateSaved = true
     }
 
     override fun onDestroy() {
         super.onDestroy()
         if (needToCloseScope()) {
-            Timber.d("Destroying UI scope: $fragmentScopeName")
-            Toothpick.closeScope(fragmentScopeName)
+            Timber.d("Destroying UI scope: $dialogScopeName")
+            Toothpick.closeScope(dialogScopeName)
         }
     }
 
     protected open fun initScope(scope: Scope) {}
 
-    fun isFullyDestroying(): Boolean =
+    private fun isFullyDestroying(): Boolean =
         (isRemoving && !isInstanceStateSaved) || // Because isRemoving == true for fragment in backstack on screen rotation
                 ((parentFragment as? BaseFragment)?.isFullyDestroying() ?: false)
 
@@ -89,6 +89,6 @@ abstract class BaseFragment : MvpAppCompatFragment() {
             ?: Scopes.INTERACTOR_SCOPE
 
     companion object {
-        private const val FRAGMENT_SCOPE_NAME_KEY = "fragment_scope_name"
+        private const val DIALOG_SCOPE_NAME_KEY = "dialog_scope_name"
     }
 }

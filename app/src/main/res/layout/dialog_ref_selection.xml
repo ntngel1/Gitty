@@ -3,20 +3,17 @@
   ~ This file created by Kirill Shepelev (aka ntngel1)
   ~ ntngel1@gmail.com
   -->
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_repository_code"
+        android:id="@+id/recycler_branch_selection"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_button" />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

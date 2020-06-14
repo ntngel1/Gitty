@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 16.4.2020
+ * Copyright (c) 14.6.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -14,6 +14,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 
 //region Context
 
@@ -41,6 +42,14 @@ fun Context.color(
 fun Context.colorStateList(
     @ColorRes colorResId: Int
 ) = ColorStateList.valueOf(color(colorResId))
+
+//endregion
+
+//region Fragment
+
+fun Fragment.drawable(
+    @DrawableRes drawableResId: Int
+) = requireContext().getDrawable(drawableResId)
 
 //endregion
 

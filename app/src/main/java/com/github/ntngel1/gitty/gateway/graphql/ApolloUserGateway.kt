@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 16.4.2020
+ * Copyright (c) 14.6.2020
  * This file created by Kirill Shepelev (aka ntngel1)
  * ntngel1@gmail.com
  */
@@ -11,6 +11,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.rx2.rxQuery
 import com.github.ntngel1.gitty.*
+import com.github.ntngel1.gitty.domain.entities.common.Page
 import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarDayEntity
 import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarEntity
 import com.github.ntngel1.gitty.domain.entities.contribution_calendar.ContributionCalendarWeekEntity
@@ -36,28 +37,30 @@ class ApolloUserGateway @Inject constructor(
             login = login
         )
 
-        return apolloClient.rxQuery(query)
-            .subscribeOn(Schedulers.io()) // TODO pass schedulers via constructor
-            .map { response ->
-                response.data()?.user ?: throw IllegalStateException() // TODO Error handling?
-            }
-            .map { data ->
-                ProfileHeaderEntity(
-                    login = data.login,
-                    name = data.name,
-                    avatarUrl = data.avatarUrl,
-                    repositoriesCount = data.repositories.totalCount,
-                    projectsCount = data.projects.totalCount,
-                    followersCount = data.followers.totalCount,
-                    followingCount = data.following.totalCount,
-                    starredRepositoriesCount = data.starredRepositories.totalCount,
-                    status = UserStatusEntity(
-                        message = data.status?.message,
-                        emoji = data.status?.emoji
+        return Single.defer {
+            apolloClient.rxQuery(query)
+                .subscribeOn(Schedulers.io()) // TODO pass schedulers via constructor
+                .map { response ->
+                    response.data()?.user ?: throw IllegalStateException() // TODO Error handling?
+                }
+                .map { data ->
+                    ProfileHeaderEntity(
+                        login = data.login,
+                        name = data.name,
+                        avatarUrl = data.avatarUrl,
+                        repositoriesCount = data.repositories.totalCount,
+                        projectsCount = data.projects.totalCount,
+                        followersCount = data.followers.totalCount,
+                        followingCount = data.following.totalCount,
+                        starredRepositoriesCount = data.starredRepositories.totalCount,
+                        status = UserStatusEntity(
+                            message = data.status?.message,
+                            emoji = data.status?.emoji
+                        )
                     )
-                )
-            }
-            .singleOrError()
+                }
+                .singleOrError()
+        }
     }
 
     override fun getCurrentUserLogin(): Single<String> {
@@ -141,7 +144,7 @@ class ApolloUserGateway @Inject constructor(
         login: String,
         limit: Int,
         cursor: String?
-    ): Single<RepositoriesPageEntity> {
+    ): Single<Page<UserRepositoryEntity>> {
         val query = UserRepositoriesQuery(
             login = login,
             limit = limit,
@@ -155,10 +158,10 @@ class ApolloUserGateway @Inject constructor(
                     ?: throw IllegalStateException() // TODO Error handling?
             }
             .map { page ->
-                RepositoriesPageEntity(
+                Page(
                     hasNextPage = page.pageInfo.hasNextPage,
                     cursor = page.pageInfo.endCursor,
-                    repositories = page.nodes.emptyListIfNull()
+                    items = page.nodes.emptyListIfNull()
                         .filterNotNull()
                         .map { repository ->
                             UserRepositoryEntity(
@@ -184,7 +187,7 @@ class ApolloUserGateway @Inject constructor(
         login: String,
         limit: Int,
         cursor: String?
-    ): Single<RepositoriesPageEntity> {
+    ): Single<Page<UserRepositoryEntity>> {
         val query = UserStarredRepositoriesQuery(
             login = login,
             limit = limit,
@@ -198,10 +201,10 @@ class ApolloUserGateway @Inject constructor(
                     ?: throw IllegalStateException() // TODO Error handling?
             }
             .map { page ->
-                RepositoriesPageEntity(
+                Page(
                     hasNextPage = page.pageInfo.hasNextPage,
                     cursor = page.pageInfo.endCursor,
-                    repositories = page.nodes.emptyListIfNull()
+                    items = page.nodes.emptyListIfNull()
                         .filterNotNull()
                         .map { repository ->
                             UserRepositoryEntity(

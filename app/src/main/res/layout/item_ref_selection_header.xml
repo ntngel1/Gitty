@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 14.6.2020
+  ~ This file created by Kirill Shepelev (aka ntngel1)
+  ~ ntngel1@gmail.com
+  -->
+
+<com.google.android.material.button.MaterialButtonToggleGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toggle_group_ref_selection_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    app:singleSelection="true"
+    tools:checkedButton="@id/button_ref_selection_header_branches">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_ref_selection_header_branches"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/branches" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_ref_selection_header_tags"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tags" />
+
+</com.google.android.material.button.MaterialButtonToggleGroup>
